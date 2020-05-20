@@ -6,7 +6,7 @@ import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/
 
 import LeftNavigation from './LeftNavigation';
 import history from './history';
-import VideoList from './VideoList';
+import VideoList from './Video/VideoList';
 import DoctorList from './DoctorList';
 
 const { SubMenu } = Menu;
@@ -36,6 +36,7 @@ function App() {
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
               <Switch>
+                <Route exact path="/" component={VideoList} />
                 <Route exact path="/videolist" component={VideoList} />
                 <Route exact path="/doctorlist" component={DoctorList} />
                 {/* <Route path="/app/template/create" component={CreateTemplateHOC} />
