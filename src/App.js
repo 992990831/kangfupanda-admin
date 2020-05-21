@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Card, Col, Row, Layout, Menu, Breadcrumb, Dropdown, Avatar, Badge, Modal } from 'antd';
 import { Router, Route, Switch, Link } from 'react-router-dom';
@@ -6,8 +6,9 @@ import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/
 
 import LeftNavigation from './LeftNavigation';
 import history from './history';
+import { Login } from './Login';
 import VideoList from './Video/VideoList';
-import DoctorList from './DoctorList';
+import DoctorList from './Doctor/DoctorList';
 
 const { SubMenu } = Menu;
 const { Sider, Header, Content, Footer } = Layout
@@ -16,7 +17,9 @@ let minHeight = `${window.innerHeight}px`;
 
 let collapsed = false;
 
+
 function App() {
+  const [initLoading, setInitLoading] = useState(true);
   return (
     <Router history={history}>
       <Layout>
@@ -62,7 +65,29 @@ function App() {
               </Switch>
           </Layout>
         </Layout>
+        <Modal
+          title='登录'
+          visible={initLoading}
+          maskClosable={false}
+          footer={[
+            <Button key="submit" type="primary" loading={false} onClick={
+              () => {
+                // setTimeout(() => {
+                //   setInitLoading(false);
+                // }, 1500);
+                setInitLoading(false);
+              }
+              }>
+              登录
+            </Button>,
+          ]}
+          onOk={ () => {setInitLoading(false);} }
+          onCancel={ () => {setInitLoading(false);} }
+        >
+          <Login></Login>
+        </Modal>
       </Layout>
+      
     </Router>
   );
 }
