@@ -14,6 +14,12 @@ const columns = [
     render: text => <a>{text}</a>,
   },
   {
+    title: '作者姓名',
+    dataIndex: 'author',
+    key: 'author',
+    render: text => <a>{text}</a>,
+  },
+  {
     title: '封面',
     key: 'poster',
     dataIndex: 'poster',
@@ -69,6 +75,7 @@ const data = [
   {
     key: '1',
     name: '肩颈痛的西医治疗',
+    author: 'Tom',
     duration: 15,
     address: 'New York No. 1 Lake Park',
     tags: ['西医', '肩颈'],
@@ -77,6 +84,7 @@ const data = [
   {
     key: '2',
     name: '1分钟缓解颈部疼痛',
+    author: 'Lucy',
     duration: 60,
     address: 'London No. 1 Lake Park',
     tags: ['西医'],
@@ -85,6 +93,7 @@ const data = [
   {
     key: '3',
     name: '三个动作解决肩颈酸痛',
+    author: 'Brad',
     duration: 30,
     address: 'Sidney No. 1 Lake Park',
     tags: ['西医', '腰椎'],
@@ -159,6 +168,17 @@ class VideoList extends Component {
                 <Form.Item
                   name="视频名称"
                   label="视频名称"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  name="作者姓名"
+                  label="作者姓名"
                   rules={[
                     {
                       required: true,
