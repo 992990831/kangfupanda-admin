@@ -1,6 +1,7 @@
 import React from 'react';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Constants } from './Constants';
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -33,11 +34,17 @@ function getBase64(img, callback) {
       if (info.file.status === 'done') {
         // Get this url from response in real world.
         getBase64(info.file.originFileObj, imageUrl =>
-          this.setState({
-            imageUrl,
-            loading: false,
-          }),
-        );
+          {
+            this.setState({
+              imageUrl,
+              loading: false,
+            });
+
+            if (this.props.afterUpload) {
+              this.props.afterUpload(info.file.response.Data);
+            }
+          }
+        );        
       }
     };
   
@@ -55,7 +62,7 @@ function getBase64(img, callback) {
           listType="picture-card"
           className="avatar-uploader"
           showUploadList={false}
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action= {Constants.APIBaseUrl + '/video/Upload'}
           beforeUpload={beforeUpload}
           onChange={this.handleChange}
         >
