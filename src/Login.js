@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { createHashHistory } from 'history';
 
@@ -11,7 +11,19 @@ const tailLayout = {
 };
 
 export const Login = () => {
+  
+  const addFormRef = useRef();
+
   const onFinish = values => {
+    debugger;
+
+    var values = addFormRef.getFieldsValue();
+    if(values.name != 'admin' || values.password != 'kfp123')
+    {
+      return false;
+
+    }
+
     console.log('Success:', values);
     const history = createHashHistory();
     history.push('/videolist');
@@ -22,7 +34,7 @@ export const Login = () => {
   };
 
   return (
-    <Form
+    <Form ref={addFormRef}
       {...layout}
       name="basic"
       initialValues={{ remember: true }}
@@ -31,7 +43,7 @@ export const Login = () => {
     >
       <Form.Item
         label="用户名"
-        name="用户名"
+        name="name"
         rules={[{ required: true, message: '请输入用户名' }]}
       >
         <Input />
@@ -39,7 +51,7 @@ export const Login = () => {
 
       <Form.Item
         label="密码"
-        name="密码"
+        name="password"
         rules={[{ required: true, message: '请输入密码' }]}
       >
         <Input.Password />

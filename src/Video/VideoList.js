@@ -23,7 +23,8 @@ class VideoList extends Component {
     super(props)
     this.state = {
       showAdd: false,
-      loading: false
+      loading: false,
+      videos: []
     }
   }
   componentWillMount() {
