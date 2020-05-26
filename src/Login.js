@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef,forwardRef,useImperativeHandle  } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { createHashHistory } from 'history';
 
@@ -10,10 +10,25 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-export const Login = () => {
+const Login = forwardRef((props, ref) => {
   
   const addFormRef = useRef();
 
+  useImperativeHandle(ref, () => ({
+
+    onLogin(){
+      var values = addFormRef.current.getFieldsValue();
+      if(values.name != 'admin' || values.password != 'kfp123')
+      {
+        return false;
+      }
+  
+      return true;
+    }
+  
+
+  }));
+  
   const onFinish = values => {
     debugger;
 
@@ -58,5 +73,6 @@ export const Login = () => {
       </Form.Item>
     </Form>
   );
-};
+});
 
+export default Login;

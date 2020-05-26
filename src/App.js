@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import 'antd/dist/antd.css';
-import { Button, Card, Col, Row, Layout, Menu, Breadcrumb, Dropdown, Avatar, Badge, Modal } from 'antd';
+import { Button, notification, Card, Col, Row, Layout, Menu, Breadcrumb, Dropdown, Avatar, Badge, Modal } from 'antd';
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 
 import LeftNavigation from './LeftNavigation';
 import history from './history';
-import { Login } from './Login';
+import Login from './Login';
 import VideoList from './Video/VideoList';
 import DoctorList from './Doctor/DoctorList';
 
@@ -23,6 +23,9 @@ function onlogin(){
 
 function App() {
   const [initLoading, setInitLoading] = useState(true);
+  const loginFormRef = useRef();
+  // const testRef = useRef();
+
   return (
     <Router history={history}>
       <Layout>
@@ -47,19 +50,30 @@ function App() {
           footer={[
             <Button key="submit" type="primary" loading={false} onClick={
               () => {
-                // setTimeout(() => {
-                //   setInitLoading(false);
-                // }, 1500);
-                setInitLoading(false);
+                if(loginFormRef && loginFormRef.current.onLogin && loginFormRef.current.onLogin())
+                {
+                  setInitLoading(false);
+                }
+                else
+                {
+                  notification.open({
+                    message: '登录失败',
+                    description:
+                      '登录失败',
+                    onClick: () => {
+                      //console.log('Notification Clicked!');
+                    },
+                    duration: 3
+                  });
+                }
               }
               }>
               登录
             </Button>,
           ]}
-          onOk={ () => {setInitLoading(false);} }
-          onCancel={ () => {setInitLoading(false);} }
         >
-          <Login onLogin={onlogin}></Login>
+          
+          <Login ref={loginFormRef}></Login>
         </Modal>
       </Layout>
       
