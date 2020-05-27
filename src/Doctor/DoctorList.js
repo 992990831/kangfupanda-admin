@@ -67,6 +67,17 @@ function DoctorList() {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
+          {
+            !record.verified? 
+            <a onClick={(e) => {
+              verifyUser(record.openId);
+            }}>认证</a>:
+            <a onClick={(e) => {
+              unverifyUser(record.openId);
+            }}>取消认证</a>
+          }
+          
+          
           <a onClick={(e) => {
             showEditUser(record);
           }}>修改</a>
@@ -217,6 +228,22 @@ function DoctorList() {
 
   const handleAfterUploadImage = (headpic) => {
     setHeadpic(headpic);
+  }
+
+  const verifyUser = (openId) => {
+    axios(`${Constants.APIBaseUrl}/user/verify?openId=${openId}`, {
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => {
+      getList();
+    })
+  }
+
+  const unverifyUser = (openId) => {
+    axios(`${Constants.APIBaseUrl}/user/unverify?openId=${openId}`, {
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => {
+      getList();
+    })
   }
 
   return (
