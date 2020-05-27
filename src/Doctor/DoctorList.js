@@ -48,6 +48,24 @@ function DoctorList() {
       key: 'usertype',
     },
     {
+      title: 'App中显示',
+      key: 'displayinapp',
+      dataIndex: 'displayinapp',
+      render: (text, record) => (
+        <Space size="middle">
+          {
+            !record.displayinapp? 
+            <a onClick={(e) => {
+              displayInApp(record.openId);
+            }}>不显示</a>:
+            <a onClick={(e) => {
+              hideFromApp(record.openId);
+            }}>显示</a>
+          }
+        </Space>
+      ),
+    },
+    {
       title: '简介',
       dataIndex: 'note',
       key: 'note',
@@ -246,6 +264,22 @@ function DoctorList() {
     })
   }
 
+  const displayInApp = (openId) => {
+    axios(`${Constants.APIBaseUrl}/user/display?openId=${openId}`, {
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => {
+      getList();
+    })
+  }
+
+  const hideFromApp = (openId) => {
+    axios(`${Constants.APIBaseUrl}/user/hide?openId=${openId}`, {
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => {
+      getList();
+    })
+  }
+
   return (
     <React.Fragment>
       <Row type="flex" justify='end'>
@@ -329,7 +363,11 @@ function DoctorList() {
                 <Form.Item label="用户类型" name="usertype">
                   <Select defaultValue="普通用户">
                     <Select.Option value="普通用户">普通用户</Select.Option>
-                    <Select.Option value="治疗师">治疗师</Select.Option>
+                    <Select.Option value="专家-医学护肤">专家-医学护肤</Select.Option>
+                    <Select.Option value="专家-运动康复">专家-运动康复</Select.Option>
+                    <Select.Option value="专家-营养">专家-营养</Select.Option>
+                    <Select.Option value="专家-产后康复">专家-产后康复</Select.Option>
+                    <Select.Option value="专家-儿童康复">专家-儿童康复</Select.Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
