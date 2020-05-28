@@ -9,6 +9,7 @@ import history from './history';
 import Login from './Login';
 import VideoList from './Video/VideoList';
 import DoctorList from './Doctor/DoctorList';
+import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 const { SubMenu } = Menu;
 const { Sider, Header, Content, Footer } = Layout
@@ -40,6 +41,7 @@ function App() {
                 <Route exact path="/" component={VideoList} />
                 <Route exact path="/videolist" component={VideoList} />
                 <Route exact path="/doctorlist" component={DoctorList} />
+                <Route exact path="/messagelist" component={GraphicMessageList} />
               </Switch>
           </Layout>
         </Layout>

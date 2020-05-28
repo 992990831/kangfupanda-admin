@@ -114,14 +114,10 @@ function DoctorList() {
   const [showAdd, setShowAdd] = useState(false);
   const [headpic, setHeadpic] = useState(null);
 
+  //只在初始化时需要出发，所以第二个参数为空
   useEffect(() => {
-
-    if (users && users.length > 0) {
-      return;
-    }
-
     getList();
-  })
+  }, [])
 
   const getList = () => {
     axios(`${Constants.APIBaseUrl}/user/list`, {

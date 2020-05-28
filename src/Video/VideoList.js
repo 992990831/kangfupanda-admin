@@ -37,6 +37,9 @@ class VideoList extends Component {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
+        let videos = res.data.map(video => {
+          return {...video, key: video.id};
+        })
           this.setState({
             videos: res.data,
           });
