@@ -48,7 +48,7 @@ function GraphicMessageList() {
             key: 'pic01',
             render: pic01 => (
                 <>
-                    <img src={pic01} alt="" className="graphicMessagePic" />
+                    <img src={`${Constants.ResourceUrl}/${pic01}`} alt="" className="graphicMessagePic" />
                 </>
             ),
         },
@@ -116,11 +116,11 @@ function GraphicMessageList() {
             author: values.author,
             text: values.text,
             pic01: pics[0],
-            pic02: pics[0],
-            pic03: pics[0],
-            pic04: pics[0],
-            pic01: pics[0],
-            pic01: pics[0],
+            pic02: pics[1],
+            pic03: pics[2],
+            pic04: pics[3],
+            pic05: pics[4],
+            pic06: pics[5],
         }
 
         axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
