@@ -19,7 +19,7 @@ class VideoUpload extends React.Component {
       return file;
     });
 
-    if (fileList && fileList[0].status === "done") {//fileList.length > 0 && fileList[0].url) {
+    if (fileList && fileList.length > 0 && fileList[0].status === "done") {//fileList.length > 0 && fileList[0].url) {
       if (this.props.afterUpload) {
         this.props.afterUpload(file.response.Data);
       }
@@ -27,8 +27,11 @@ class VideoUpload extends React.Component {
 
   }
   render() {
+    
+    let uploadUrl = this.props.uploadUrl? this.props.uploadUrl : '/video/Upload';
+
     const props = {
-      action: Constants.APIBaseUrl + '/video/Upload',
+      action: `${Constants.APIBaseUrl}${uploadUrl}`,
       onChange: this.handleChange,
       defaultFileList: [
       ],

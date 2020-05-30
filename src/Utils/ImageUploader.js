@@ -26,6 +26,22 @@ function getBase64(img, callback) {
       loading: false,
     };
   
+    componentDidMount(){
+    }
+
+    componentWillReceiveProps(nextProp){
+      if(nextProp.imageUrl && nextProp.imageUrl.urls && nextProp.imageUrl.urls[nextProp.imageUrl.index])
+      {
+        this.setState({
+          imageUrl: nextProp.imageUrl.prefix + nextProp.imageUrl.urls[nextProp.imageUrl.index]
+        });
+      }
+      
+    }
+
+    componentWillUpdate(nextProp){
+    }
+
     handleChange = info => {
       if (info.file.status === 'uploading') {
         this.setState({ loading: true });
@@ -49,6 +65,7 @@ function getBase64(img, callback) {
     };
   
     render() {
+      
       const uploadButton = (
         <div>
           {this.state.loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -56,13 +73,16 @@ function getBase64(img, callback) {
         </div>
       );
       const { imageUrl } = this.state;
+
+      let uploadUrl = this.props.uploadUrl? this.props.uploadUrl : '/video/Upload';
+
       return (
         <Upload
           name="avatar"
           listType="picture-card"
           className="avatar-uploader"
           showUploadList={false}
-          action= {Constants.APIBaseUrl + '/video/Upload'}
+          action= {`${Constants.APIBaseUrl}${uploadUrl}`}
           beforeUpload={beforeUpload}
           onChange={this.handleChange}
         >

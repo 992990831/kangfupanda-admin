@@ -17,13 +17,11 @@ function LeftNavigation(handleClick) {
             <Menu.Item key="1">视频管理<Link to='/videolist' /></Menu.Item>
             <Menu.Item key="2">图文管理<Link to='/messagelist' /></Menu.Item>
             <Menu.Item key="3">用户管理<Link to='/doctorlist' /></Menu.Item>
-            
           </SubMenu>
-          <SubMenu key="sub2" icon={<LaptopOutlined />} title="设置">
-            <Menu.Item key="5">option5</Menu.Item>
-            <Menu.Item key="6">option6</Menu.Item>
-            <Menu.Item key="7">option7</Menu.Item>
-            <Menu.Item key="8">option8</Menu.Item>
+          <SubMenu key="sub2" icon={<LaptopOutlined />} title="官网">
+            <Menu.Item key="5">视频列表<Link to='/officialsite/videolist' /></Menu.Item>
+            <Menu.Item key="6">图文<Link to='/officialsite/graphisList' /></Menu.Item>
+            <Menu.Item key="7">医生<Link to='/officialsite/doctorList' /></Menu.Item>
           </SubMenu>
         </Menu>
     );

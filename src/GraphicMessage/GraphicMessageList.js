@@ -97,7 +97,6 @@ function GraphicMessageList() {
     }
 
     const handleOk = () => {
-        debugger;
         var values = addFormRef.current.getFieldsValue();
 
         addGraphicMessage(values);
