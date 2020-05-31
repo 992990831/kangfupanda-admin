@@ -38,7 +38,7 @@ function DoctorList() {
       dataIndex: 'headpic',
       render: headpic => (
         <>
-          <img src={headpic} alt="" className="doctorHeadPic" />
+          <img src={headpic.substring(0,4)=='http'?  headpic : `${Constants.ResourceUrl}${headpic}`} alt="" className="doctorHeadPic" />
         </>
       ),
     },
