@@ -34,7 +34,7 @@ export const SiteDoctorList = () => {
             pics[2] = res.data.pic03;
             pics[3] = res.data.pic04;
             setPics(pics);
-
+            debugger;
             formRef.current.setFieldsValue({
                 name01: res.data.name01,
                 comment01: res.data.comment01,
@@ -42,11 +42,11 @@ export const SiteDoctorList = () => {
                 name02: res.data.name02,
                 comment02: res.data.comment02,
                 pic02: pics[1],
-                author03: res.data.author03,
-                text03: res.data.text03,
+                name03: res.data.name03,
+                comment03: res.data.comment03,
                 pic03: pics[2],
-                author04: res.data.author04,
-                text04: res.data.text04,
+                name04: res.data.name04,
+                comment04: res.data.comment04,
                 pic04: pics[3],
             })
             
@@ -205,7 +205,7 @@ export const SiteDoctorList = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="text03"
+                            name="comment03"
                             label="描述"
                             rules={[
                                 {
@@ -241,7 +241,7 @@ export const SiteDoctorList = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="text04"
+                            name="comment04"
                             label="描述"
                             rules={[
                                 {
