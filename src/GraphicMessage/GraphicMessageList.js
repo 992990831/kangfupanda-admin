@@ -1,6 +1,6 @@
 import React, {  useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom'
-import { Row, Col, Button, Table, Form, List, Divider, Modal, message, Tag, Space, Select, Input, notification, Popconfirm } from 'antd';
+import { Row, Col, Button, Table, Form, List, Divider, Modal, AutoComplete, Tag, Space, Select, Input, notification, Popconfirm } from 'antd';
 import './GraphicMessage.css';
 
 import ImageUploader from '../Utils/ImageUploader';
@@ -74,10 +74,13 @@ function GraphicMessageList() {
     const [messages, setMessages] = useState([]);
     const [pics, setPics] = useState(['','','','','','',]);
     const [showAdd, setShowAdd] = useState(false);
+    const [users, setUsers] = useState([]);
+    
 
     //只在初始化时需要出发，所以第二个参数为空
     useEffect(() => {
         getList();
+        GetUserList();
     }, [])
 
     const getList = () => {
@@ -86,6 +89,23 @@ function GraphicMessageList() {
         }).then(res => {
             setMessages(res.data);
         })
+    }
+
+    const GetUserList = () =>
+    {
+        axios.get(`${Constants.APIBaseUrl}/user/list`, {
+        headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => {
+            let users = res.data.map(user => {
+            return {...user, key: user.id, value: user.nickName};
+            })
+
+            setUsers(users);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     const showAddForm = () => {
@@ -224,7 +244,19 @@ function GraphicMessageList() {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <AutoComplete
+                                    style={{
+                                    width: 200,
+                                    }}
+                                    backfill={true}
+                                    options={users}
+                                    placeholder="请输入用户昵称查找"
+                                    filterOption={(inputValue, option) =>{
+                                        return option.nickName.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                                    }
+                                    
+                                    }
+                                />
                             </Form.Item>
                             <Form.Item
                                 name="text"

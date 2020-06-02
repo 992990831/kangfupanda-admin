@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
-import { Row, Col, Button, Table, Form, Divider, Modal, message, Tag, Space, Select, Input, notification,Popconfirm } from 'antd';
+import { Row, Col, Button, Table, Form, Divider, Modal, message, Tag, Space, AutoComplete, Input, notification,Popconfirm } from 'antd';
 import './VideoList.css';
 
 import ImageUploader from '../Utils/ImageUploader';
@@ -24,11 +24,13 @@ class VideoList extends Component {
     this.state = {
       showAdd: false,
       loading: false,
+      users: [],
       videos: []
     }
   }
   componentWillMount() {
     this.GetList();
+    this.GetUserList();
   }
 
   GetList()
@@ -41,7 +43,26 @@ class VideoList extends Component {
           return {...video, key: video.id};
         })
           this.setState({
-            videos: res.data,
+            videos,
+          });
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  }
+
+  GetUserList()
+  {
+    axios.get(`${Constants.APIBaseUrl}/user/list`, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        let users = res.data.map(user => {
+          return {...user, key: user.id, value: user.nickName};
+        })
+
+          this.setState({
+            users,
           });
       })
       .catch(function (error) {
@@ -151,31 +172,6 @@ columns = [
     dataIndex: 'duration',
     key: 'duration',
   },
-  // {
-  //   title: 'Address',
-  //   dataIndex: 'address',
-  //   key: 'address',
-  // },
-  // {
-  //   title: '标签',
-  //   key: 'tags',
-  //   dataIndex: 'tags',
-  //   render: tags => (
-  //     <>
-  //       {tags.map(tag => {
-  //         let color = tag.length > 5 ? 'geekblue' : 'green';
-  //         if (tag === '肩颈') {
-  //           color = 'volcano';
-  //         }
-  //         return (
-  //           <Tag color={color} key={tag}>
-  //             {tag.toUpperCase()}
-  //           </Tag>
-  //         );
-  //       })}
-  //     </>
-  //   ),
-  // },
   {
     title: '操作',
     key: 'action',
@@ -233,14 +229,26 @@ columns = [
                 </Form.Item>
                 <Form.Item
                   name="author"
-                  label="作者姓名"
+                  label="作者"
                   rules={[
                     {
                       required: true,
                     },
                   ]}
                 >
-                  <Input />
+                  <AutoComplete
+                    style={{
+                      width: 200,
+                    }}
+                    backfill={true}
+                    options={this.state.users}
+                    placeholder="请输入用户昵称查找"
+                    filterOption={(inputValue, option) =>{
+                        return option.nickName.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                      }
+                      
+                    }
+                  />
                 </Form.Item>
                 <Form.Item
                   name="posterUri"
