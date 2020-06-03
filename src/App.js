@@ -12,6 +12,7 @@ import DoctorList from './Doctor/DoctorList';
 import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
+import { PendingAuditList } from './Audit';
 
 const { SubMenu } = Menu;
 const { Sider, Header, Content, Footer } = Layout
@@ -47,6 +48,7 @@ function App() {
                 <Route exact path="/officialsite/videolist" component={SiteVideoList} />
                 <Route exact path="/officialsite/graphisList" component={SiteGraphicMessageList} />
                 <Route exact path="/officialsite/doctorList" component={SiteDoctorList} />
+                <Route exact path="/pendingAuditList" component={PendingAuditList} />
               </Switch>
           </Layout>
         </Layout>
