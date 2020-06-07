@@ -21,7 +21,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
-  "homepage": "/admin",
+  "homepage": ".",
   "eslintConfig": {
     "extends": "react-app"
   },
