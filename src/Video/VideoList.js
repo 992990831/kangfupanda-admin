@@ -81,6 +81,17 @@ class VideoList extends Component {
 
     values.posterUri = this.state.imgName;
     values.videoUri = this.state.videoName;
+
+    let openId = '';
+    
+    this.state.users.forEach((user)=>{
+      if(values.author == user.nickName)
+      {
+        openId = user.openId;
+      }
+    });
+
+    values.openId = openId;
     
     axios.post(`${Constants.APIBaseUrl}/video/addVideo`, values, {
       headers: { 'Content-Type': 'application/json' }

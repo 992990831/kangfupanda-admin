@@ -142,6 +142,17 @@ function GraphicMessageList() {
             pic06: pics[5],
         }
 
+        let openId = '';
+    
+        users.forEach((user)=>{
+          if(values.author == user.nickName)
+          {
+            openId = user.openId;
+          }
+        });
+    
+        body.openId = openId;
+
         axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
             headers: { 'Content-Type': 'application/json' }
           })
