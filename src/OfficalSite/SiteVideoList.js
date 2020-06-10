@@ -7,6 +7,8 @@ import './SiteVideo.css';
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 
+import RichText from '../Utils/RichText';
+
 const { TextArea } = Input;
 
 const layout = {
@@ -20,7 +22,7 @@ const tailLayout = {
 
 export const SiteVideoList = () => {
     const formRef = useRef();
-    const [videos, setvideos] = useState(['','','','']);
+    const [videos, setvideos] = useState(['', '', '', '']);
 
     useEffect(() => {
         getList();
@@ -75,7 +77,7 @@ export const SiteVideoList = () => {
         })
         setvideos(videos);
     }
-    
+
 
     const handleAfterUploadVideo04 = (videoName) => {
         videos[3] = videoName;
@@ -84,8 +86,34 @@ export const SiteVideoList = () => {
         })
         setvideos(videos);
     }
-    
+
+    const handleRichTextChange01 = (value) =>{
+        formRef.current.setFieldsValue({
+            text01: value,
+        })
+    }
+
+    const handleRichTextChange02 = (value) =>{
+        formRef.current.setFieldsValue({
+            text02: value,
+        })
+    }
+
+    const handleRichTextChange03 = (value) =>{
+        formRef.current.setFieldsValue({
+            text03: value,
+        })
+    }
+
+    const handleRichTextChange04 = (value) =>{
+        formRef.current.setFieldsValue({
+            text04: value,
+        })
+    }
+
     const saveForm = () => {
+        debugger;
+
         var values = formRef.current.getFieldsValue();
         values.video01 = videos[0];
         values.video02 = videos[1];
@@ -93,44 +121,36 @@ export const SiteVideoList = () => {
         values.video04 = videos[3];
         axios.post(`${Constants.APIBaseUrl}/site/save/video`, values, {
             headers: { 'Content-Type': 'application/json' }
-          })
+        })
             .then(res => {
                 notification.open({
                     message: '保存成功',
                     description:
-                      '保存成功',
+                        '保存成功',
                     onClick: () => {
-                      //console.log('Notification Clicked!');
+                        //console.log('Notification Clicked!');
                     },
                     duration: 3
-                  });
+                });
             })
-            .catch( (error) => {
-              notification.open({
-                message: '保存失败',
-                description:
-                  '保存失败',
-                onClick: () => {
-                  //console.log('Notification Clicked!');
-                },
-                duration: 3
-              });
+            .catch((error) => {
+                notification.open({
+                    message: '保存失败',
+                    description:
+                        '保存失败',
+                    onClick: () => {
+                        //console.log('Notification Clicked!');
+                    },
+                    duration: 3
+                });
             });
     }
-    
+
     return (
         <React.Fragment>
-            {/* <Row gutter={[16, 16]}>
-                <Col span={6}>
-                  111222333
-                </Col>
-                <Col span={6} />
-                <Col span={6} />
-                <Col span={6} />
-            </Row> */}
             <Form ref={formRef} {...layout} style={{ marginTop: '20px' }}>
                 <Row gutter={[16, 16]}>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author01"
                             label="作者"
@@ -150,8 +170,9 @@ export const SiteVideoList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange01} />
                         </Form.Item>
 
                         <Form.Item
@@ -174,10 +195,10 @@ export const SiteVideoList = () => {
                                 },
                             ]}
                         >
-                            <input readOnly style={{width:'100%'}}></input>
+                            <input readOnly style={{ width: '100%' }}></input>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author02"
                             label="作者"
@@ -197,8 +218,9 @@ export const SiteVideoList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange02} />
                         </Form.Item>
 
                         <Form.Item
@@ -221,10 +243,13 @@ export const SiteVideoList = () => {
                                 },
                             ]}
                         >
-                            <input readOnly style={{width:'100%'}}></input>
+                            <input readOnly style={{ width: '100%' }}></input>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                </Row>
+                <Divider dashed={true} style={{borderColor:'grey'}}></Divider>
+                <Row gutter={[16, 16]}>
+                    <Col span={12}>
                         <Form.Item
                             name="author03"
                             label="作者"
@@ -244,8 +269,9 @@ export const SiteVideoList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange03} />
                         </Form.Item>
 
                         <Form.Item
@@ -268,10 +294,10 @@ export const SiteVideoList = () => {
                                 },
                             ]}
                         >
-                            <input readOnly style={{width:'100%'}}></input>
+                            <input readOnly style={{ width: '100%' }}></input>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author04"
                             label="作者"
@@ -291,8 +317,9 @@ export const SiteVideoList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange04} />
                         </Form.Item>
 
                         <Form.Item
@@ -315,7 +342,7 @@ export const SiteVideoList = () => {
                                 },
                             ]}
                         >
-                            <input readOnly style={{width:'100%'}}></input>
+                            <input readOnly style={{ width: '100%' }}></input>
                         </Form.Item>
                     </Col>
                 </Row>

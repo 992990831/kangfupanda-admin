@@ -7,6 +7,8 @@ import './SiteGraphicMessage.css';
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 
+import RichText from '../Utils/RichText';
+
 const { TextArea } = Input;
 
 const layout = {
@@ -50,15 +52,6 @@ export const SiteGraphicMessageList = () => {
                 text04: res.data.text04,
                 pic04: pics[3],
             })
-
-            // if(pics[0])
-            // {
-            //     formRef.current.setFieldsValue({
-            //         pic01: pics[0]
-            //     })
-            // }
-
-            
         })
     }
 
@@ -83,6 +76,30 @@ export const SiteGraphicMessageList = () => {
         setPics(pics);
     }
     
+    const handleRichTextChange01 = (value) =>{
+        formRef.current.setFieldsValue({
+            text01: value,
+        })
+    }
+
+    const handleRichTextChange02 = (value) =>{
+        formRef.current.setFieldsValue({
+            text02: value,
+        })
+    }
+
+    const handleRichTextChange03 = (value) =>{
+        formRef.current.setFieldsValue({
+            text03: value,
+        })
+    }
+
+    const handleRichTextChange04 = (value) =>{
+        formRef.current.setFieldsValue({
+            text04: value,
+        })
+    }
+
     const saveForm = () => {
         var values = formRef.current.getFieldsValue();
         values.pic01 = pics[0];
@@ -118,17 +135,9 @@ export const SiteGraphicMessageList = () => {
     
     return (
         <React.Fragment>
-            {/* <Row gutter={[16, 16]}>
-                <Col span={6}>
-                  111222333
-                </Col>
-                <Col span={6} />
-                <Col span={6} />
-                <Col span={6} />
-            </Row> */}
             <Form ref={formRef} {...layout} style={{ marginTop: '20px' }}>
                 <Row gutter={[16, 16]}>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author01"
                             label="作者"
@@ -148,8 +157,9 @@ export const SiteGraphicMessageList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange01} />
                         </Form.Item>
 
                         <Form.Item
@@ -164,7 +174,7 @@ export const SiteGraphicMessageList = () => {
                             <ImageUploader afterUpload={handleAfterUploadPic01} uploadUrl='video/UploadSiteVideo' imageUrl={{urls: pics, index:0, prefix: Constants.OfficialSiteResourceUrl}}></ImageUploader>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author02"
                             label="作者"
@@ -184,8 +194,9 @@ export const SiteGraphicMessageList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange02} />
                         </Form.Item>
 
                         <Form.Item
@@ -200,7 +211,9 @@ export const SiteGraphicMessageList = () => {
                             <ImageUploader afterUpload={handleAfterUploadPic02} uploadUrl='video/UploadSiteVideo' imageUrl={{urls: pics, index:1, prefix: Constants.OfficialSiteResourceUrl}}></ImageUploader>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                </Row>
+                <Row gutter={[16, 16]}>
+                    <Col span={12}>
                         <Form.Item
                             name="author03"
                             label="作者"
@@ -220,8 +233,9 @@ export const SiteGraphicMessageList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange03} />
                         </Form.Item>
 
                         <Form.Item
@@ -236,7 +250,7 @@ export const SiteGraphicMessageList = () => {
                             <ImageUploader afterUpload={handleAfterUploadPic03} uploadUrl='video/UploadSiteVideo' imageUrl={{urls: pics, index:2, prefix: Constants.OfficialSiteResourceUrl}}></ImageUploader>
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={12}>
                         <Form.Item
                             name="author04"
                             label="作者"
@@ -256,8 +270,9 @@ export const SiteGraphicMessageList = () => {
                                     required: false,
                                 },
                             ]}
+                            style={{ height: '300px' }}
                         >
-                            <TextArea />
+                            <RichText onValueChange={handleRichTextChange04} />
                         </Form.Item>
 
                         <Form.Item
