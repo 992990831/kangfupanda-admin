@@ -59,6 +59,7 @@ function GraphicMessageList() {
                 <Space size="middle">
                     <a onClick={(e) => {
                         //showEditUser(record);
+                        
                     }}>修改</a>
                     <Popconfirm title="确定删除?" onConfirm={() => {
                         DeleteGraphicMessage(record.id);
@@ -72,6 +73,7 @@ function GraphicMessageList() {
 
     const addFormRef = useRef();
     const [messages, setMessages] = useState([]);
+    //用来缓存添加、修改界面的6个图片
     const [pics, setPics] = useState(['','','','','','',]);
     const [showAdd, setShowAdd] = useState(false);
     const [users, setUsers] = useState([]);
