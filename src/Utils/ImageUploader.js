@@ -86,7 +86,17 @@ function getBase64(img, callback) {
           beforeUpload={beforeUpload}
           onChange={this.handleChange}
         >
-          {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+          {
+          imageUrl ? 
+          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : 
+          (
+            this.props.defaultImage?
+            <img src={`${Constants.ResourceUrl}${this.props.defaultImage}`} alt="avatar" style={{ width: '100%' }} /> :
+            uploadButton
+          
+           )
+          
+          }
         </Upload>
       );
     }
