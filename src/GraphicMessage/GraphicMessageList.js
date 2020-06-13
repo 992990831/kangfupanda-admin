@@ -4,6 +4,7 @@ import { Row, Col, Button, Table, Form, List, Divider, Modal, AutoComplete, Tag,
 import './GraphicMessage.css';
 
 import ImageUploader from '../Utils/ImageUploader';
+import AudioUploader from '../Utils/AudioUploader';
 import { Constants } from '../Utils/Constants';
 
 import axios from 'axios';
@@ -75,6 +76,7 @@ function GraphicMessageList() {
     const [messages, setMessages] = useState([]);
     //用来缓存添加、修改界面的6个图片
     const [pics, setPics] = useState(['', '', '', '', '', '',]);
+    const [audioes, setAudioes] = useState(['', '', '']);
     const [showAdd, setShowAdd] = useState(false);
     // const [showEdit, setShowEdit] = useState(false);
     const [users, setUsers] = useState([]);
@@ -122,6 +124,7 @@ function GraphicMessageList() {
     }
 
     const handleCancel = () => {
+        ClearForm();
         setShowAdd(false);
         setEditRecord({showEdit:false});
     }
@@ -143,6 +146,9 @@ function GraphicMessageList() {
             pic04: pics[3],
             pic05: pics[4],
             pic06: pics[5],
+            audio01: audioes[0],
+            audio02: audioes[1],
+            audio03: audioes[2],
         }
 
         let openId = '';
@@ -159,12 +165,14 @@ function GraphicMessageList() {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(res => {
+                ClearForm();
                 setShowAdd(false);
                 setEditRecord({showEdit:false});                
                 getList();
             })
             .catch((error) => {
                 console.log(error);
+                ClearForm();
                 setShowAdd(false);
                 notification.open({
                     message: '保存失败',
@@ -176,6 +184,13 @@ function GraphicMessageList() {
                     duration: 3
                 });
             });
+    }
+
+    //添加后清空表单值
+    const ClearForm = () =>{
+        setPics(['','','','','','']);
+        setAudioes(['','','']);
+        addFormRef.current.resetFields();
     }
 
     const DeleteGraphicMessage = (id) => {
@@ -213,6 +228,11 @@ function GraphicMessageList() {
             pics[5] = editRecord.pic06;
             setPics(pics);
 
+            audioes[0] = editRecord.audio01;
+            audioes[1] = editRecord.audio02;
+            audioes[2] = editRecord.audio03;
+            setAudioes(audioes);
+
             addFormRef.current.setFieldsValue({
                 id: editRecord.id,
                 author: editRecord.author,
@@ -244,6 +264,21 @@ function GraphicMessageList() {
     const handleAfterUploadImage06 = (pic) => {
         pics[5] = pic;
         setPics(pics);
+    }
+
+    const handleAfterUploadAudio01 = (audio) => {
+        audioes[0] = audio;
+        setAudioes(audioes);
+    }
+
+    const handleAfterUploadAudio02 = (audio) => {
+        audioes[1] = audio;
+        setAudioes(audioes);
+    }
+
+    const handleAfterUploadAudio03 = (audio) => {
+        audioes[2] = audio;
+        setAudioes(audioes);
     }
 
     return (
@@ -333,6 +368,29 @@ function GraphicMessageList() {
                                         <ImageUploader afterUpload={handleAfterUploadImage04} defaultImage={editRecord.pic04}></ImageUploader>
                                         <ImageUploader afterUpload={handleAfterUploadImage05} defaultImage={editRecord.pic05}></ImageUploader>
                                         <ImageUploader afterUpload={handleAfterUploadImage06} defaultImage={editRecord.pic06}></ImageUploader>
+                                    </List.Item>
+                                </List>
+
+
+                            </Form.Item>
+                            <Form.Item
+                                name="audio"
+                                label="音频"
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
+                            >
+                                <List>
+                                    <List.Item>
+                                        <AudioUploader afterUpload={handleAfterUploadAudio01} defaultAudio={editRecord.audio01}></AudioUploader>
+                                    </List.Item>
+                                    <List.Item>
+                                        <AudioUploader afterUpload={handleAfterUploadAudio02} defaultAudio={editRecord.audio02}></AudioUploader>
+                                    </List.Item>
+                                    <List.Item>
+                                        <AudioUploader afterUpload={handleAfterUploadAudio03} defaultAudio={editRecord.audio03}></AudioUploader>
                                     </List.Item>
                                 </List>
 
