@@ -35,11 +35,11 @@ function GraphicMessageList() {
             render: text => <a>{text}</a>,
         },
         {
-            title: '文字',
-            key: 'text',
-            dataIndex: 'text',
+            title: '标题',
+            key: 'name',
+            dataIndex: 'name',
             render: text => {
-                let subText = text.length > 50 ? text.substring(0, 50) : text;
+                let subText = text?  (text.length > 50 ? text.substring(0, 50) : text) : '无标题';
                 return <span>{subText}</span>
             }
         },
@@ -139,6 +139,7 @@ function GraphicMessageList() {
         let body = {
             id: values.id,
             author: values.author,
+            name: values.name,
             text: values.text,
             pic01: pics[0],
             pic02: pics[1],
@@ -236,6 +237,7 @@ function GraphicMessageList() {
             addFormRef.current.setFieldsValue({
                 id: editRecord.id,
                 author: editRecord.author,
+                name: editRecord.name,
                 text: editRecord.text
             });          
         }, 500);
@@ -337,6 +339,17 @@ function GraphicMessageList() {
 
                                     }
                                 />
+                            </Form.Item>
+                            <Form.Item
+                                name="name"
+                                label="标题"
+                                rules={[
+                                    {
+                                        required: false,
+                                    },
+                                ]}
+                            >
+                                <Input />
                             </Form.Item>
                             <Form.Item
                                 name="text"
