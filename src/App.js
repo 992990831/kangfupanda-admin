@@ -12,7 +12,7 @@ import DoctorList from './Doctor/DoctorList';
 import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
-import { PendingAuditList } from './Audit';
+import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
 
 const { SubMenu } = Menu;
 const { Sider, Header, Content, Footer } = Layout
@@ -34,7 +34,7 @@ function App() {
     <Router history={history}>
       <Layout>
         <Layout>
-          <Sider width={200} className="site-layout-background">
+          <Sider width={220} className="site-layout-background">
             <div style={{ height: '100%', minHeight: minHeight, overflowY: 'scroll', backgroundColor: '#4e73df' }}>
               <LeftNavigation></LeftNavigation>
             </div>
@@ -48,7 +48,9 @@ function App() {
                 <Route exact path="/officialsite/videolist" component={SiteVideoList} />
                 <Route exact path="/officialsite/graphisList" component={SiteGraphicMessageList} />
                 <Route exact path="/officialsite/doctorList" component={SiteDoctorList} />
-                <Route exact path="/pendingAuditList" component={PendingAuditList} />
+                <Route exact path="/audit/pending" component={PendingAuditList} />
+                <Route exact path="/audit/approved" component={ApprovedList} />
+                <Route exact path="/audit/rejected" component={RejectedList} />
               </Switch>
           </Layout>
         </Layout>

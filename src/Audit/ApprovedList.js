@@ -3,7 +3,7 @@ import { Row, Col, Button, Table, Form, List, Divider, Modal, message, Tag, Spac
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 
-export const PendingAuditList = () => {
+export const ApprovedList = () => {
     const columns = [
         {
             title: '评论人昵称',
@@ -31,57 +31,37 @@ export const PendingAuditList = () => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <Popconfirm title="确定通过?" onConfirm={() => {
-                        Approve(record.comment_id);
-                    }}>
-                        <a href="javascript:;">通过</a>
-                    </Popconfirm>
-                    <Popconfirm title="确定拒绝?" onConfirm={() => {
+                    <Popconfirm title="确定改为拒绝?" onConfirm={() => {
                         Reject(record.comment_id);
                     }}>
-                        <a href="javascript:;">拒绝</a>
+                        <a href="javascript:;">改为拒绝</a>
                     </Popconfirm>
                 </Space>
             ),
         },
     ];
 
-    const [pagination, setPagination] = useState({current:1, pageSize:6, total:0});
     const [comments, setComments] = useState([]);
-
     useEffect(() => {
-        getList(pagination.current, pagination.pageSize);
+        getList();
     }, [])
 
-    const getList = (current, pageSize) => {
-        axios(`${Constants.APIBaseUrl}/comments/audit/list?pageIndex=${current}&pageSize=${pageSize}`, {
+    const getList = () => {
+        axios(`${Constants.APIBaseUrl}/comments/audit/list/approved`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
-           
-            pagination.total = res.data.count;
-            setPagination(pagination); //这里必须要按照useState定义时的顺序，先setPagination，再是setComments。否则会出现set之后不生效的问题。
-
-            let commentList = res.data.lists.map(comment => {
+            let commentList = res.data.map(comment => {
                 return {...comment, key: comment.comment_id};
               })
             setComments(commentList);
-
-           
         })
     }
-
-    const onPaginationChange = (pageIndex, pageSize) => {
-        pagination.current = pageIndex;
-        pagination.pageSize = pageSize;
-        setPagination(pagination);
-        getList(pageIndex, pageSize);
-    }    
 
     const Approve = (commentId)=>{
         axios(`${Constants.APIBaseUrl}/comments/audit/approve?commentId=${commentId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
-            getList(pagination.current, pagination.pageSize);
+            getList();
         })
 
         
@@ -91,22 +71,14 @@ export const PendingAuditList = () => {
         axios(`${Constants.APIBaseUrl}/comments/audit/reject?commentId=${commentId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
-            getList(pagination.current, pagination.pageSize);
+            getList();
         })
     }
 
     return (
         <React.Fragment>
-            <span style={{fontSize:'18px', color:'#1890ff'}}>待审核</span>
-            <Table columns={columns} dataSource={comments} 
-            
-            pagination={{
-                  current: pagination.current,
-                  pageSize: pagination.pageSize,
-                  total:pagination.total,
-                  onChange: onPaginationChange,
-                }}
-            />
+            <span style={{fontSize:'18px', color:'#1890ff'}}>已通过</span>
+            <Table columns={columns} dataSource={comments} />
         </React.Fragment>
     )
 }
