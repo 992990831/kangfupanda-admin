@@ -152,6 +152,7 @@ function DoctorList() {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
+        ClearForm();
         setShowAdd(false);
         getList();
       })
@@ -169,6 +170,15 @@ function DoctorList() {
         });
       });
   }
+
+
+  //添加后清空表单值
+  const ClearForm = () => {
+    debugger;
+    setHeadpic('');
+    addFormRef.current.resetFields();
+  }
+
 
   const DeleteUser = (openId) =>
   {

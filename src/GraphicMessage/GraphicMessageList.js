@@ -373,14 +373,14 @@ function GraphicMessageList() {
                             >
                                 <List>
                                     <List.Item>
-                                        <ImageUploader afterUpload={handleAfterUploadImage01} defaultImage={`${Constants.ResourceUrl}${editRecord.pic01}`}></ImageUploader>
-                                        <ImageUploader afterUpload={handleAfterUploadImage02} defaultImage={`${Constants.ResourceUrl}${editRecord.pic02}`}></ImageUploader>
-                                        <ImageUploader afterUpload={handleAfterUploadImage03} defaultImage={`${Constants.ResourceUrl}${editRecord.pic03}`}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage01} defaultImage={editRecord && editRecord.pic01? `${Constants.ResourceUrl}${editRecord.pic01}` : null}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage02} defaultImage={editRecord && editRecord.pic02? `${Constants.ResourceUrl}${editRecord.pic02}` : null}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage03} defaultImage={editRecord && editRecord.pic03? `${Constants.ResourceUrl}${editRecord.pic03}` : null}></ImageUploader>
                                     </List.Item>
                                     <List.Item>
-                                        <ImageUploader afterUpload={handleAfterUploadImage04} defaultImage={`${Constants.ResourceUrl}${editRecord.pic04}`}></ImageUploader>
-                                        <ImageUploader afterUpload={handleAfterUploadImage05} defaultImage={`${Constants.ResourceUrl}${editRecord.pic05}`}></ImageUploader>
-                                        <ImageUploader afterUpload={handleAfterUploadImage06} defaultImage={`${Constants.ResourceUrl}${editRecord.pic06}`}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage04} defaultImage={editRecord && editRecord.pic04? `${Constants.ResourceUrl}${editRecord.pic04}` : null}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage05} defaultImage={editRecord && editRecord.pic05? `${Constants.ResourceUrl}${editRecord.pic05}` : null}></ImageUploader>
+                                        <ImageUploader afterUpload={handleAfterUploadImage06} defaultImage={editRecord && editRecord.pic06? `${Constants.ResourceUrl}${editRecord.pic06}` : null}></ImageUploader>
                                     </List.Item>
                                 </List>
 

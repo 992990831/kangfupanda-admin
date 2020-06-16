@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Row, Col, Button, Table, Form, List, Divider, Modal, message, Tag, Space, Select, Input, notification, Popconfirm } from 'antd';
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
+import { UsersContext } from '../Utils/UsersContext';
+
+const { Option } = Select;
 
 export const PendingAuditList = () => {
     const columns = [
@@ -48,13 +51,18 @@ export const PendingAuditList = () => {
 
     const [pagination, setPagination] = useState({current:1, pageSize:6, total:0});
     const [comments, setComments] = useState([]);
+    const [userOpenId, setUserOpenId] = useState('');
+
+    const users = useContext(UsersContext);
 
     useEffect(() => {
         getList(pagination.current, pagination.pageSize);
     }, [])
 
-    const getList = (current, pageSize) => {
-        axios(`${Constants.APIBaseUrl}/comments/audit/list?pageIndex=${current}&pageSize=${pageSize}`, {
+    const getList = (current, pageSize, openId) => {
+        openId = openId? openId:'';
+
+        axios(`${Constants.APIBaseUrl}/comments/audit/list?pageIndex=${current}&pageSize=${pageSize}&openId=${openId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
            
@@ -95,18 +103,65 @@ export const PendingAuditList = () => {
         })
     }
 
+    const Search= (openId) => {
+        debugger;
+        getList(pagination.current, pagination.pageSize, openId);
+    }
+
     return (
         <React.Fragment>
-            <span style={{fontSize:'18px', color:'#1890ff'}}>待审核</span>
-            <Table columns={columns} dataSource={comments} 
-            
-            pagination={{
-                  current: pagination.current,
-                  pageSize: pagination.pageSize,
-                  total:pagination.total,
-                  onChange: onPaginationChange,
-                }}
-            />
+                <Row gutter={8}>
+                    <Col span={24}>
+                        <span style={{ fontSize: '18px', color: '#1890ff' }}>待审核</span>
+                    </Col>
+                </Row>
+                <Row gutter={8}>
+                    <Col span={8}>
+                        评论人：<Select style={{ width: '60%' }} onChange={(value)=>{
+                            debugger;
+                            setUserOpenId(value);
+                        }}>
+                        {
+                            users.map(u => (
+                                <Option key={u.id} value={u.openId}>{u.nickName}</Option>
+                              ))
+                        }
+                        </Select>
+                    </Col>
+                    {/* <Col span={5}>
+                        评论人 <Input style={{ width: '70%' }} defaultValue={'123'} onChange={() => { }} />
+                    </Col> 
+
+                    <Col span={8}>
+                        状态：<Select defaultValue={1} style={{ width: '60%' }} onChange={() => { }}>
+                            <Option value={-1}>--全部--</Option>
+                            <Option value={0}>未启动</Option>
+                            <Option value={1}>进行中</Option>
+                            <Option value={2}>已完成</Option>
+                        </Select>
+                    </Col>*/}
+
+                    <Col span={3}>
+                        <Button type="primary" onClick={()=>{
+                            Search(userOpenId);
+                        }}>
+                            搜索
+                            </Button>
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: "10px" }}>
+                    <Col span={24}>
+                        <Table columns={columns} dataSource={comments}
+                            pagination={{
+                                current: pagination.current,
+                                pageSize: pagination.pageSize,
+                                total: pagination.total,
+                                onChange: onPaginationChange,
+                            }}
+                        />
+                    </Col>
+                </Row>
+
         </React.Fragment>
     )
 }
