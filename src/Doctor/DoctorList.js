@@ -113,6 +113,7 @@ function DoctorList() {
   const [users, setUsers] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [headpic, setHeadpic] = useState(null);
+  const [detailimage, setDetailImage] = useState(null);
 
   //只在初始化时需要出发，所以第二个参数为空
   useEffect(() => {
@@ -123,6 +124,9 @@ function DoctorList() {
     axios(`${Constants.APIBaseUrl}/user/list`, {
       headers: { 'Content-Type': 'application/json' }
     }).then(res => {
+      let tempUsers = res.data.map(user => {
+        return {...user, key: user.openId}
+      })
       setUsers(res.data);
     })
   }
@@ -148,6 +152,7 @@ function DoctorList() {
 
   const addUser = (user) =>{
     user.headpic = headpic;
+    user.detailimage = detailimage;
     axios.post(`${Constants.APIBaseUrl}/user/add`, user, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -176,6 +181,7 @@ function DoctorList() {
   const ClearForm = () => {
     debugger;
     setHeadpic('');
+    setDetailImage('');
     addFormRef.current.resetFields();
   }
 
@@ -205,9 +211,13 @@ function DoctorList() {
   {
       setShowAdd(true);
 
+      setHeadpic(user.headpic);
+      setDetailImage(user.detailimage);
+
       //必须有个延迟，等Form弹出来，否则addFormRef为空
       window.setTimeout(()=>{
         setHeadpic(user.headpic);
+        setDetailImage(user.detailimage);
         addFormRef.current.setFieldsValue({
           openId: user.openId,
           nickname: user.nickName,
@@ -215,6 +225,7 @@ function DoctorList() {
           city: user.city,
           sex: user.sex,
           headpic: user.headpic,
+          detailimage: user.detailimage,
           usertype: user.usertype,
           note: user.note
         });
@@ -228,6 +239,7 @@ function DoctorList() {
     var values = addFormRef.current.getFieldsValue();
 
     values.headpic = headpic;
+    values.detailimage = detailimage;
     axios.post(`${Constants.APIBaseUrl}/user/update`, values, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -252,6 +264,10 @@ function DoctorList() {
 
   const handleAfterUploadImage = (headpic) => {
     setHeadpic(headpic);
+  }
+
+  const handleAfterUploadDetailImage = (detailimage) => {
+    setDetailImage(detailimage);
   }
 
   const verifyUser = (openId) => {
@@ -385,7 +401,18 @@ function DoctorList() {
                     },
                   ]}
                 >
-                  <ImageUploader afterUpload={handleAfterUploadImage}></ImageUploader>
+                  <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic? `${Constants.ResourceUrl}${headpic}` : null}></ImageUploader>
+                </Form.Item>
+                <Form.Item
+                  name="detailimage"
+                  label="详情照"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <ImageUploader afterUpload={handleAfterUploadDetailImage} defaultImage={detailimage? `${Constants.ResourceUrl}${detailimage}` : null}></ImageUploader>
                 </Form.Item>
               </Form>
 
