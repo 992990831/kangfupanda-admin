@@ -49,7 +49,7 @@ export const PendingAuditList = () => {
         },
     ];
 
-    const [pagination, setPagination] = useState({current:1, pageSize:6, total:0});
+    const [pagination, setPagination] = useState({current:1, pageSize:15, total:0});
     const [comments, setComments] = useState([]);
     const [userOpenId, setUserOpenId] = useState('');
 
