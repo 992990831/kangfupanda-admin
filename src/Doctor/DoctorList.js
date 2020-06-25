@@ -226,6 +226,7 @@ function DoctorList() {
           sex: user.sex,
           headpic: user.headpic,
           detailimage: user.detailimage,
+          expertise: user.expertise,
           usertype: user.usertype,
           note: user.note
         });
@@ -235,7 +236,6 @@ function DoctorList() {
 
   const UpdateUser = () =>
   {
-    debugger
     var values = addFormRef.current.getFieldsValue();
 
     values.headpic = headpic;
@@ -244,6 +244,7 @@ function DoctorList() {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
+        ClearForm();
         setShowAdd(false);
         getList();
       })
@@ -322,7 +323,10 @@ function DoctorList() {
             </Button>,
           ]}
           // onOk={this.handleOk.bind(this)}
-          // onCancel={this.handleCancel.bind(this)}
+          onCancel={()=>{
+            ClearForm();
+            setShowAdd(false);
+          }}
         >
           <Row>
             <Col span={24}>
@@ -382,8 +386,14 @@ function DoctorList() {
                 >
                   <TextArea rows={2} />
                 </Form.Item>
+                <Form.Item label="特长" name="expertise">
+                  <Select defaultValue="">
+                    <Select.Option value="医学护肤">医学护肤</Select.Option>
+                    <Select.Option value="医学减重">医学减重</Select.Option>
+                  </Select>
+                </Form.Item>
                 <Form.Item label="用户类型" name="usertype">
-                  <Select defaultValue="普通用户">
+                  <Select defaultValue="">
                     <Select.Option value="普通用户">普通用户</Select.Option>
                     <Select.Option value="专家-医学护肤">专家-医学护肤</Select.Option>
                     <Select.Option value="专家-运动康复">专家-运动康复</Select.Option>
@@ -401,7 +411,7 @@ function DoctorList() {
                     },
                   ]}
                 >
-                  <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic? `${Constants.ResourceUrl}${headpic}` : null}></ImageUploader>
+                  <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic && headpic.startsWith('http')? headpic: `${Constants.ResourceUrl}${headpic}`}></ImageUploader>
                 </Form.Item>
                 <Form.Item
                   name="detailimage"
