@@ -19,7 +19,7 @@ function LeftNavigation(handleClick) {
             {/* <Menu.Item key="3">用户管理<Link to='/doctorlist' /></Menu.Item> */}
           </SubMenu>
           <SubMenu key="sub2" icon={<LaptopOutlined />} title="发现页管理">
-            <Menu.Item key="3">专家<Link to='/doctorList' /></Menu.Item>
+            <Menu.Item key="3">专家<Link to='/found' /></Menu.Item>
             <Menu.Item key="4">产品<Link to='/' /></Menu.Item>
             <Menu.Item key="5">活动<Link to='/' /></Menu.Item>
           </SubMenu>

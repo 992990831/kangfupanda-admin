@@ -13,6 +13,8 @@ import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
 import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
+import { FoundList } from './Found';
+
 import { Constants } from './Utils/Constants';
 
 import { UsersContext } from './Utils/UsersContext';
@@ -72,6 +74,7 @@ function App() {
                 <Route exact path="/videolist" component={VideoList} />
                 <Route exact path="/doctorlist" component={DoctorList} />
                 <Route exact path="/messagelist" component={GraphicMessageList} />
+                <Route exact path="/found" component={FoundList} />
                 <Route exact path="/officialsite/videolist" component={SiteVideoList} />
                 <Route exact path="/officialsite/graphisList" component={SiteGraphicMessageList} />
                 <Route exact path="/officialsite/doctorList" component={SiteDoctorList} />

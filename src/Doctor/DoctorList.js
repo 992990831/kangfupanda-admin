@@ -99,11 +99,11 @@ function DoctorList() {
           <a onClick={(e) => {
             showEditUser(record);
           }}>修改</a>
-          <Popconfirm title="确定删除?" onConfirm={() => {
-                DeleteUser(record.openId);
-              }}>
-              <a href="javascript:;">删除</a>
-            </Popconfirm>
+          {/* <Popconfirm title="确定删除?" onConfirm={() => {
+            DeleteUser(record.openId);
+          }}>
+            <a href="javascript:;">删除</a>
+          </Popconfirm> */}
         </Space>
       ),
     },
