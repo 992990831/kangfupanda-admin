@@ -218,6 +218,9 @@ function GraphicMessageList() {
         let tags = selectedTags.map(tag => {
             return { graphicid,  tagtext: tag};
         })
+
+        await axios.delete(`${Constants.APIBaseUrl}/tagxgraphic/delete?graphicId=${graphicid}`);
+
         await axios.post(`${Constants.APIBaseUrl}/tagxgraphic/add`, tags)
     }
 
