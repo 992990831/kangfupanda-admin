@@ -16,7 +16,7 @@ function LeftNavigation(handleClick) {
           <SubMenu key="sub1" icon={<UserOutlined />} title="研习社内容管理">
             <Menu.Item key="1">图文+音频审核<Link to='/messagelist' /></Menu.Item>
             <Menu.Item key="2">视频审核<Link to='/videolist' /></Menu.Item>
-            {/* <Menu.Item key="3">用户管理<Link to='/doctorlist' /></Menu.Item> */}
+            <Menu.Item key="11">标签管理<Link to='/tag' /></Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<LaptopOutlined />} title="发现页管理">
             <Menu.Item key="3">专家<Link to='/found' /></Menu.Item>

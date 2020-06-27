@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 import ImageUploader from '../Utils/ImageUploader';
 
-import './FoundList.css';
+import './TagList.css';
 
 const { TextArea } = Input;
 
@@ -18,76 +18,14 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-export function FoundList() {
+export function TagList() {
     const columns = [
-        // {
-        //   title: 'id',
-        //   dataIndex: 'openId',
-        //   key: 'openId',
-        // render: text => <span style={{width:'10px'}}>{text}</span>,
-        // },
         {
-            title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
-            width:'150px',
+            title: '标签名',
+            dataIndex: 'text',
+            key: 'text',
             render: text => <a>{text}</a>,
         },
-        {
-            title: '个人照',
-            key: 'headpic',
-            dataIndex: 'headpic',
-            width:'150px',
-            render: headpic => (
-                <>
-                    <img src={headpic.substring(0, 4) == 'http' ? headpic : `${Constants.ResourceUrl}${headpic}`} alt="" className="doctorHeadPic" />
-                </>
-            ),
-        },
-        // {
-        //   title: '用户类型',
-        //   dataIndex: 'usertype',
-        //   key: 'usertype',
-        // },
-        // {
-        //   title: 'App中显示',
-        //   key: 'displayinapp',
-        //   dataIndex: 'displayinapp',
-        //   render: (text, record) => (
-        //     <Space size="middle">
-        //       {
-        //         !record.displayinapp? 
-        //         <a onClick={(e) => {
-        //           displayInApp(record.openId);
-        //         }}>不显示</a>:
-        //         <a onClick={(e) => {
-        //           hideFromApp(record.openId);
-        //         }}>显示</a>
-        //       }
-        //     </Space>
-        //   ),
-        // },
-        {
-            title: '简介',
-            dataIndex: 'note',
-            key: 'note',
-            style:{width:'auto'},
-            render: (text, record) => (
-                <span style={{whiteSpace:'pre-wrap'}}>
-                    {record.note}
-                </span>
-            )
-        },
-        // {
-        //   title: '省',
-        //   dataIndex: 'province',
-        //   key: 'province',
-        // },
-        // {
-        //     title: '城市',
-        //     dataIndex: 'city',
-        //     key: 'city',
-        // },
         {
             title: '操作',
             key: 'action',
@@ -95,10 +33,10 @@ export function FoundList() {
             render: (text, record) => (
                 <Space size="middle">
                      <a onClick={(e) => {
-                        showEditFound(record);
+                        showEditTag(record);
                     }}>修改</a>
                     <Popconfirm title="确定删除?" onConfirm={() => {
-                        DeleteFund(record.id);
+                        DeleteTag(record.id);
                     }}>
                         <a href="javascript:;">删除</a>
                     </Popconfirm>
@@ -109,11 +47,10 @@ export function FoundList() {
 
     const addFormRef = useRef();
     const [pagination, setPagination] = useState({current:1, pageSize:10, total:0});
-    const [founds, setFounds] = useState([]);
+    const [tags, setTags] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
-    const [headpic, setHeadpic] = useState(null);
-    const [detailimage, setDetailImage] = useState(null);
-    const [name, setName] = useState('');
+    //搜索用的文本内容
+    const [text, setText] = useState('');
 
     //只在初始化时需要出发，所以第二个参数为空
     useEffect(() => {
@@ -121,14 +58,14 @@ export function FoundList() {
     }, [])
 
     const getList = () => {
-        axios(`${Constants.APIBaseUrl}/found/list?pageIndex=${pagination.current}&pageSize=${pagination.pageSize}&name=${name}`, {
+        axios(`${Constants.APIBaseUrl}/tag/list?pageIndex=${pagination.current}&pageSize=${pagination.pageSize}&text=${text}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
             pagination.total = res.data.count;
-            let founds = res.data.list.map(found => {
-                return { ...found, key: found.id }
+            let tags = res.data.list.map(tag => {
+                return { ...tag, key: tag.id }
             })
-            setFounds(founds);
+            setTags(tags);
         })
     }
 
@@ -144,17 +81,16 @@ export function FoundList() {
     const handleOk = () => {
         var values = addFormRef.current.getFieldsValue();
         if (!values.id) {
-            addFound(values);
+            addTag(values);
         }
         else {
-            UpdateFound(values);
+            UpdateTag(values);
         }
     }
 
-    const addFound = (found) => {
-        found.headpic = headpic;
-        found.detailimage = detailimage;
-        axios.post(`${Constants.APIBaseUrl}/found/add`, found, {
+    const addTag = (tag) => {
+     
+        axios.post(`${Constants.APIBaseUrl}/tag/add`, tag, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
             ClearForm();
@@ -166,7 +102,7 @@ export function FoundList() {
             notification.open({
                 message: '保存失败',
                 description:
-                    '保存专家信息失败',
+                    '保存标签失败',
                 onClick: () => {
                     //console.log('Notification Clicked!');
                 },
@@ -178,15 +114,13 @@ export function FoundList() {
 
     //添加后清空表单值
     const ClearForm = () => {
-        setHeadpic('');
-        setDetailImage('');
         addFormRef.current.resetFields();
     }
 
 
-      const DeleteFund = (id) =>
+      const DeleteTag = (id) =>
       {
-        axios.delete(`${Constants.APIBaseUrl}/found/delete?id=${id}`, {
+        axios.delete(`${Constants.APIBaseUrl}/tag/delete?id=${id}`, {
           headers: { 'Content-Type': 'application/json' }
         })
           .then(res => {
@@ -196,7 +130,7 @@ export function FoundList() {
             notification.open({
               message: '删除失败',
               description:
-                '删除专家信息失败',
+                '删除标签失败',
               onClick: () => {
                 //console.log('Notification Clicked!');
               },
@@ -205,35 +139,24 @@ export function FoundList() {
           });
       }
 
-      const showEditFound = (found) =>
+      const showEditTag = (tag) =>
       {
           setShowAdd(true);
-
-          setHeadpic(found.headpic);
-          setDetailImage(found.detailimage);
-
           //必须有个延迟，等Form弹出来，否则addFormRef为空
           window.setTimeout(()=>{
-            setHeadpic(found.headpic);
-            setDetailImage(found.detailimage);
             addFormRef.current.setFieldsValue({
-              id: found.id,
-              name: found.name,
-              headpic: found.headpic,
-              detailimage: found.detailimage,
-              note: found.note
+              id: tag.id,
+              text: tag.text,
             });
           }, 200)
 
       }
 
-      const UpdateFound = () =>
+      const UpdateTag = () =>
       {
         var values = addFormRef.current.getFieldsValue();
 
-        values.headpic = headpic;
-        values.detailimage = detailimage;
-        axios.post(`${Constants.APIBaseUrl}/found/update`, values, {
+        axios.post(`${Constants.APIBaseUrl}/tag/update`, values, {
           headers: { 'Content-Type': 'application/json' }
         })
           .then(res => {
@@ -247,7 +170,7 @@ export function FoundList() {
             notification.open({
               message: '更新失败',
               description:
-                '更新专家信息失败',
+                '更新标签失败',
               onClick: () => {
                 //console.log('Notification Clicked!');
               },
@@ -256,13 +179,6 @@ export function FoundList() {
           });
       }
 
-    const handleAfterUploadImage = (headpic) => {
-        setHeadpic(headpic);
-    }
-
-    const handleAfterUploadDetailImage = (detailimage) => {
-        setDetailImage(detailimage);
-    }
 
     const onPaginationChange = (pageIndex, pageSize) => {
         pagination.current = pageIndex;
@@ -276,8 +192,8 @@ export function FoundList() {
             <Row type="flex" justify='center' style={{marginTop:'10px', marginBottom:'5px'}}>
                 <Col span={6}>
                    
-                    <Input placeholder='请输入姓名' onChange={(input)=>{
-                        setName(input.target.value);
+                    <Input placeholder='请输入标签名' onChange={(input)=>{
+                        setText(input.target.value);
                     }}></Input>
                 </Col>
                 <Col span={3}>
@@ -289,7 +205,7 @@ export function FoundList() {
                     <Button type="primary" onClick={showAddForm}>添加</Button>
                 </Col>
             </Row>
-            <Table columns={columns} dataSource={founds} 
+            <Table columns={columns} dataSource={tags} 
             pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
@@ -298,7 +214,7 @@ export function FoundList() {
             }}
             />
             <Modal
-                title='添加专家'
+                title='添加标签'
                 visible={showAdd}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
@@ -329,8 +245,8 @@ export function FoundList() {
                                 <Input readOnly={true} />
                             </Form.Item>
                             <Form.Item
-                                name="name"
-                                label="姓名"
+                                name="text"
+                                label="标签名"
                                 rules={[
                                     {
                                         required: true,
@@ -338,50 +254,6 @@ export function FoundList() {
                                 ]}
                             >
                                 <Input />
-                            </Form.Item>
-                            {/* <Form.Item
-                                name="city"
-                                label="市"
-                                rules={[
-                                    {
-                                        required: false,
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item> */}
-                            <Form.Item
-                                name="note"
-                                label="简介"
-                                rules={[
-                                    {
-                                        required: false,
-                                    },
-                                ]}
-                            >
-                                <TextArea rows={5} />
-                            </Form.Item>
-                            <Form.Item
-                                name="headpic"
-                                label="头像"
-                                rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}
-                            >
-                                <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic && headpic.startsWith('http') ? headpic : headpic ? `${Constants.ResourceUrl}${headpic}` : null}></ImageUploader>
-                            </Form.Item>
-                            <Form.Item
-                                name="detailimage"
-                                label="详情照"
-                                rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}
-                            >
-                                <ImageUploader afterUpload={handleAfterUploadDetailImage} defaultImage={detailimage ? `${Constants.ResourceUrl}${detailimage}` : null}></ImageUploader>
                             </Form.Item>
                         </Form>
 

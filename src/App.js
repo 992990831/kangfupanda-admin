@@ -14,6 +14,7 @@ import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
 import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
 import { FoundList } from './Found';
+import { TagList } from './Tag';
 
 import { Constants } from './Utils/Constants';
 
@@ -75,6 +76,7 @@ function App() {
                 <Route exact path="/doctorlist" component={DoctorList} />
                 <Route exact path="/messagelist" component={GraphicMessageList} />
                 <Route exact path="/found" component={FoundList} />
+                <Route exact path="/tag" component={TagList} />
                 <Route exact path="/officialsite/videolist" component={SiteVideoList} />
                 <Route exact path="/officialsite/graphisList" component={SiteGraphicMessageList} />
                 <Route exact path="/officialsite/doctorList" component={SiteDoctorList} />

@@ -10,6 +10,7 @@ import { Constants } from '../Utils/Constants';
 import axios from 'axios';
 
 const { TextArea } = Input;
+const { CheckableTag } = Tag;
 
 const layout = {
     labelCol: { span: 4 },
@@ -22,12 +23,6 @@ const tailLayout = {
 
 function GraphicMessageList() {
     const columns = [
-        // {
-        //   title: 'id',
-        //   dataIndex: 'openId',
-        //   key: 'openId',
-        // render: text => <span style={{width:'10px'}}>{text}</span>,
-        // },
         {
             title: '作者',
             dataIndex: 'author',
@@ -60,7 +55,7 @@ function GraphicMessageList() {
                 <Space size="middle">
                     <a onClick={(e) => {
                         EditGraphicMessage(record);
-
+                        getSelectedTags(record.id);
                     }}>修改</a>
                     <Popconfirm title="确定删除?" onConfirm={() => {
                         DeleteGraphicMessage(record.id);
@@ -81,12 +76,14 @@ function GraphicMessageList() {
     // const [showEdit, setShowEdit] = useState(false);
     const [users, setUsers] = useState([]);
     const [editRecord, setEditRecord] = useState({showEdit:false});
-
+    const [tags, setTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
 
     //只在初始化时需要出发，所以第二个参数为空
     useEffect(() => {
         getList();
         GetUserList();
+        getTags();
 
         if(editRecord.showEdit)
         {
@@ -95,11 +92,38 @@ function GraphicMessageList() {
 
     }, [editRecord])
 
+    const getTags=()=>{
+        axios(`${Constants.APIBaseUrl}/tag/list?pageIndex=1&pageSize=999`, {
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => {
+            let tags = res.data.list.map(tag => {
+                return { ...tag, key: tag.id }
+            })
+            setTags(tags);
+        })
+    }
+
+    const getSelectedTags=(graphicId)=>{
+        axios(`${Constants.APIBaseUrl}/tagxgraphic/selected?graphicId=${graphicId}`, {
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => {
+            debugger;
+            let tags = res.data.map(tag => {
+                return tag.tagtext
+            })
+            setSelectedTags(tags);
+        })
+    }
+
+
     const getList = () => {
         axios(`${Constants.APIBaseUrl}/message/list`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
-            setMessages(res.data);
+            let msgs = res.data.map(msg => {
+                return { ...msg, key: msg.id }
+            })
+            setMessages(msgs);
         })
     }
 
@@ -132,10 +156,33 @@ function GraphicMessageList() {
     const handleOk = () => {
         var values = addFormRef.current.getFieldsValue();
 
-        addGraphicMessage(values);
+        try
+        {
+            addGraphicMessage(values);
+            addTags(editRecord.id);
+            ClearForm();
+            setShowAdd(false);
+            setEditRecord({ showEdit: false });
+            getList();
+        }
+        catch(error){
+            console.log(error);
+            ClearForm();
+            setShowAdd(false);
+            notification.open({
+                message: '保存失败',
+                description:
+                    '保存图文失败',
+                onClick: () => {
+                    //console.log('Notification Clicked!');
+                },
+                duration: 3
+            });
+        }
+        
     }
 
-    const addGraphicMessage = (values) => {
+    const addGraphicMessage = async (values) => {
         let body = {
             id: values.id,
             author: values.author,
@@ -162,35 +209,23 @@ function GraphicMessageList() {
 
         body.openId = openId;
 
-        axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
+       await axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
             headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    const addTags = async (graphicid) => {
+        let tags = selectedTags.map(tag => {
+            return { graphicid,  tagtext: tag};
         })
-            .then(res => {
-                ClearForm();
-                setShowAdd(false);
-                setEditRecord({showEdit:false});                
-                getList();
-            })
-            .catch((error) => {
-                console.log(error);
-                ClearForm();
-                setShowAdd(false);
-                notification.open({
-                    message: '保存失败',
-                    description:
-                        '保存图文失败',
-                    onClick: () => {
-                        //console.log('Notification Clicked!');
-                    },
-                    duration: 3
-                });
-            });
+        await axios.post(`${Constants.APIBaseUrl}/tagxgraphic/add`, tags)
     }
 
     //添加后清空表单值
     const ClearForm = () =>{
         setPics(['','','','','','']);
         setAudioes(['','','']);
+        setSelectedTags([]);
         addFormRef.current.resetFields();
     }
 
@@ -294,6 +329,9 @@ function GraphicMessageList() {
             <Modal
                 title='添加图文'
                 visible={showAdd || editRecord.showEdit}
+                onCancel={()=>{
+                    handleCancel();
+                }}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
                         取消
@@ -350,6 +388,26 @@ function GraphicMessageList() {
                                 ]}
                             >
                                 <Input />
+                            </Form.Item>
+                            <Form.Item
+                                name="tag"
+                                label="标签"
+                            >
+                                <div>
+                                    {
+                                        tags.map(tag=>{
+                                            return(
+                                            <CheckableTag key={tag.id} 
+                                            checked={selectedTags.indexOf(tag.text) > -1}
+                                            onChange={checked => {
+                                                const nextSelectedTags = checked ? [...selectedTags, tag.text] : selectedTags.filter(t => t !== tag.text);
+                                                setSelectedTags(nextSelectedTags)
+                                            }}
+                                            style={{border:'solid grey 1px'}}>{tag.text}</CheckableTag>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </Form.Item>
                             <Form.Item
                                 name="text"
