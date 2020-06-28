@@ -107,7 +107,6 @@ function GraphicMessageList() {
         axios(`${Constants.APIBaseUrl}/tagxgraphic/selected?graphicId=${graphicId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
-            debugger;
             let tags = res.data.map(tag => {
                 return tag.tagtext
             })
@@ -158,12 +157,16 @@ function GraphicMessageList() {
 
         try
         {
-            addGraphicMessage(values);
-            addTags(editRecord.id);
-            ClearForm();
-            setShowAdd(false);
-            setEditRecord({ showEdit: false });
-            getList();
+            
+            let addResult = addGraphicMessage(values);
+            addResult.then( res =>{
+                addTags(res.data.Data);
+                ClearForm();
+                setShowAdd(false);
+                setEditRecord({ showEdit: false });
+                getList();
+            } )
+            
         }
         catch(error){
             console.log(error);
@@ -209,9 +212,11 @@ function GraphicMessageList() {
 
         body.openId = openId;
 
-       await axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
+       let res = await axios.post(`${Constants.APIBaseUrl}/message/add`, body, {
             headers: { 'Content-Type': 'application/json' }
         });
+
+        return res;
     }
 
     const addTags = async (graphicid) => {
