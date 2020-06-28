@@ -9,6 +9,7 @@ import history from './history';
 import Login from './Login';
 import VideoList from './Video/VideoList';
 import DoctorList from './Doctor/DoctorList';
+import UserList from './Doctor/UserList';
 import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
@@ -74,6 +75,7 @@ function App() {
                 <Route exact path="/" component={VideoList} />
                 <Route exact path="/videolist" component={VideoList} />
                 <Route exact path="/doctorlist" component={DoctorList} />
+                <Route exact path="/userlist" component={UserList} />
                 <Route exact path="/messagelist" component={GraphicMessageList} />
                 <Route exact path="/found" component={FoundList} />
                 <Route exact path="/tag" component={TagList} />

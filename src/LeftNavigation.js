@@ -30,12 +30,12 @@ function LeftNavigation(handleClick) {
           </SubMenu>
           <SubMenu key="sub4" icon={<LaptopOutlined />} title="用户管理">
             <Menu.Item key="9">专家审核<Link to='/doctorList' /></Menu.Item>
-            <Menu.Item key="10">普通用户<Link to='/' /></Menu.Item>
+            <Menu.Item key="10">普通用户<Link to='/userlist' /></Menu.Item>
           </SubMenu>
           <SubMenu key="sub5" icon={<LaptopOutlined />} title="官网">
-            <Menu.Item key="10">视频列表<Link to='/officialsite/videolist' /></Menu.Item>
-            <Menu.Item key="11">图文<Link to='/officialsite/graphisList' /></Menu.Item>
-            <Menu.Item key="12">医生<Link to='/officialsite/doctorList' /></Menu.Item>
+            <Menu.Item key="11">视频列表<Link to='/officialsite/videolist' /></Menu.Item>
+            <Menu.Item key="12">图文<Link to='/officialsite/graphisList' /></Menu.Item>
+            <Menu.Item key="13">医生<Link to='/officialsite/doctorList' /></Menu.Item>
           </SubMenu>
         </Menu>
     );

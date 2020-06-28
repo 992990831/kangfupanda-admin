@@ -18,7 +18,7 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-function DoctorList() {
+function UserList() {
   const columns = [
     {
       title: '昵称',
@@ -101,7 +101,7 @@ function DoctorList() {
   }, [])
 
   const getList = () => {
-    axios(`${Constants.APIBaseUrl}/user/admin/list/doctor`, {
+    axios(`${Constants.APIBaseUrl}/user/admin/list/user`, {
       headers: { 'Content-Type': 'application/json' }
     }).then(res => {
       let tempUsers = res.data.map(user => {
@@ -162,27 +162,6 @@ function DoctorList() {
     setDetailImage('');
     addFormRef.current.resetFields();
   }
-
-  // const DeleteUser = (openId) =>
-  // {
-  //   axios.delete(`${Constants.APIBaseUrl}/user/delete?openId=${openId}`, {
-  //     headers: { 'Content-Type': 'application/json' }
-  //   })
-  //     .then(res => {
-  //       getList();
-  //     })
-  //     .catch(function (error) {
-  //       notification.open({
-  //         message: '删除失败',
-  //         description:
-  //           '删除用户信息失败',
-  //         onClick: () => {
-  //           //console.log('Notification Clicked!');
-  //         },
-  //         duration: 3
-  //       });
-  //     });
-  // }
 
   const showEditUser = (user) =>
   {
@@ -409,4 +388,4 @@ function DoctorList() {
   )
 }
 
-export default withRouter(DoctorList)
+export default withRouter(UserList)
