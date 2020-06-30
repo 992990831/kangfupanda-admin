@@ -203,7 +203,6 @@ function GraphicMessageList() {
         }
 
         let openId = '';
-
         users.forEach((user) => {
             if (values.author == user.nickName) {
                 openId = user.openId;

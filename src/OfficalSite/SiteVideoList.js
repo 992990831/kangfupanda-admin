@@ -157,8 +157,6 @@ export const SiteVideoList = () => {
     }
 
     const saveForm = () => {
-        debugger;
-
         var values = formRef.current.getFieldsValue();
         values.video01 = videos[0];
         values.video02 = videos[1];
@@ -209,7 +207,7 @@ export const SiteVideoList = () => {
                         </Form.Item>
                         <Form.Item
                             name="text01"
-                            label="描述"
+                            label="标题"
                             rules={[
                                 {
                                     required: false,
@@ -221,7 +219,7 @@ export const SiteVideoList = () => {
                         </Form.Item>
                         <Form.Item
                             name="poster01"
-                            label="视频封面"
+                            label="封面"
                             rules={[
                                 {
                                     required: true,
@@ -232,7 +230,7 @@ export const SiteVideoList = () => {
                         </Form.Item>
                         <Form.Item
                             name="video01"
-                            label="视频"
+                            label="音频"
                             rules={[
                                 {
                                     required: true,
@@ -243,7 +241,7 @@ export const SiteVideoList = () => {
                         </Form.Item>
                         <Form.Item
                             name="video01"
-                            label="已上传视频"
+                            label="已上传音频"
                             rules={[
                                 {
                                     required: true,
