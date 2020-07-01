@@ -16,6 +16,7 @@ import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './Offical
 import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
 import { FoundList } from './Found';
 import { TagList } from './Tag';
+import { ApiLogList } from './ApiLog';
 
 import { Constants } from './Utils/Constants';
 
@@ -79,6 +80,7 @@ function App() {
                 <Route exact path="/messagelist" component={GraphicMessageList} />
                 <Route exact path="/found" component={FoundList} />
                 <Route exact path="/tag" component={TagList} />
+                <Route exact path="/log" component={ApiLogList} />
                 <Route exact path="/officialsite/videolist" component={SiteVideoList} />
                 <Route exact path="/officialsite/graphisList" component={SiteGraphicMessageList} />
                 <Route exact path="/officialsite/doctorList" component={SiteDoctorList} />
