@@ -45,6 +45,20 @@ function UserList() {
       key: 'usertype',
     },
     {
+      title: '自建',
+      key: 'openId',
+      dataIndex: 'openId',
+      width:'100px',
+      render: (openId) => (
+         <div> 
+          {
+              (openId && openId.length>32) ? <span>是</span>:<span>否</span>
+          }
+         </div>
+        
+      ),
+    },
+    {
       title: '简介',
       dataIndex: 'note',
       key: 'note',
