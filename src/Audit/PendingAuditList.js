@@ -3,7 +3,7 @@ import { Row, Col, Button, Table, Form, List, Divider, Modal, message, Tag, Spac
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 import { UsersContext } from '../Utils/UsersContext';
-
+import { AuditContext } from '../Utils/AuditContext';
 const { Option } = Select;
 
 export const PendingAuditList = () => {
@@ -53,6 +53,7 @@ export const PendingAuditList = () => {
     const [comments, setComments] = useState([]);
     const [userOpenId, setUserOpenId] = useState('');
 
+    const auditContext = useContext(AuditContext);
     const users = useContext(UsersContext);
 
     useEffect(() => {
@@ -78,6 +79,8 @@ export const PendingAuditList = () => {
         })
     }
 
+   
+
     const onPaginationChange = (pageIndex, pageSize) => {
         pagination.current = pageIndex;
         pagination.pageSize = pageSize;
@@ -89,6 +92,10 @@ export const PendingAuditList = () => {
         axios(`${Constants.APIBaseUrl}/comments/audit/approve?commentId=${commentId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
+            auditContext.dispatch({
+                type: 'approve',
+                payload: {}
+            });
             getList(pagination.current, pagination.pageSize);
         })
 
@@ -99,12 +106,15 @@ export const PendingAuditList = () => {
         axios(`${Constants.APIBaseUrl}/comments/audit/reject?commentId=${commentId}`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
+            auditContext.dispatch({
+                type: 'reject',
+                payload: {}
+            });
             getList(pagination.current, pagination.pageSize);
         })
     }
 
     const Search= (openId) => {
-        debugger;
         getList(pagination.current, pagination.pageSize, openId);
     }
 
@@ -118,7 +128,6 @@ export const PendingAuditList = () => {
                 <Row gutter={8}>
                     <Col span={8}>
                         评论人：<Select style={{ width: '60%' }} onChange={(value)=>{
-                            debugger;
                             setUserOpenId(value);
                         }}>
                         {

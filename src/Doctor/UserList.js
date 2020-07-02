@@ -24,8 +24,8 @@ function UserList() {
       title: '昵称',
       dataIndex: 'nickName',
       key: 'nickname',
-      width:'100px',
-      render: text => <span>{text}</span>,
+      width:'180px',
+      render: (text, record) => <span>{text} {(record.openId && record.openId.length>32) ? <span style={{color: 'red'}}>(自)</span>:<></>}</span>,
     },
     {
       title: '个人照',
@@ -44,30 +44,36 @@ function UserList() {
       width:'100px',
       key: 'usertype',
     },
-    {
-      title: '自建',
-      key: 'openId',
-      dataIndex: 'openId',
-      width:'100px',
-      render: (openId) => (
-         <div> 
-          {
-              (openId && openId.length>32) ? <span>是</span>:<span>否</span>
-          }
-         </div>
+    // {
+    //   title: '自建',
+    //   key: 'openId',
+    //   dataIndex: 'openId',
+    //   width:'100px',
+    //   render: (openId) => (
+    //      <div> 
+    //       {
+    //           (openId && openId.length>32) ? <span>是</span>:<span>否</span>
+    //       }
+    //      </div>
         
-      ),
-    },
+    //   ),
+    // },
     {
       title: '简介',
       dataIndex: 'note',
       key: 'note',
     },
     {
-      title: '省',
-      dataIndex: 'province',
-      key: 'province',
-      width:'100px',
+      title: '最后访问时间',
+      dataIndex: 'lastVisitedAt',
+      key: 'lastVisitedAt',
+      width: '120px'
+    },
+    {
+      title: '前一周访问量',
+      dataIndex: 'visitCountLastWeek',
+      key: 'visitCountLastWeek',
+      width: '120px'
     },
     {
       title: '市',
@@ -81,7 +87,7 @@ function UserList() {
       width:'150px',
       render: (text, record) => (
         <Space size="middle">
-          {
+          {/* {
             !record.verified? 
             <a onClick={(e) => {
               verifyUser(record.openId);
@@ -89,7 +95,7 @@ function UserList() {
             <a onClick={(e) => {
               unverifyUser(record.openId);
             }}>取消认证</a>
-          }
+          } */}
           <a onClick={(e) => {
             showEditUser(record);
           }}>修改</a>
@@ -109,20 +115,31 @@ function UserList() {
   const [headpic, setHeadpic] = useState(null);
   const [detailimage, setDetailImage] = useState(null);
 
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
+
   //只在初始化时需要出发，所以第二个参数为空
   useEffect(() => {
     getList();
   }, [])
 
   const getList = () => {
-    axios(`${Constants.APIBaseUrl}/user/admin/list/user`, {
+    axios(`${Constants.APIBaseUrl}/user/admin/list/user?pageIndex=${pagination.current}&pageSize=${pagination.pageSize}`, {
       headers: { 'Content-Type': 'application/json' }
     }).then(res => {
-      let tempUsers = res.data.map(user => {
+      pagination.total = res.data.count;
+
+      let tempUsers = res.data.list.map(user => {
         return {...user, key: user.openId}
       })
       setUsers(tempUsers);
     })
+  }
+
+  const onPaginationChange = (pageIndex, pageSize) => {
+    pagination.current = pageIndex;
+    pagination.pageSize = pageSize;
+    setPagination(pagination);
+    getList(pageIndex, pageSize);
   }
 
   const showAddForm = () => {
@@ -279,7 +296,14 @@ function UserList() {
           <Button type="primary" onClick={showAddForm}>添加</Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={users} />
+      <Table columns={columns} dataSource={users} 
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
+          onChange: onPaginationChange,
+        }}
+      />
       <Modal
           title='添加用户'
           visible={showAdd}
