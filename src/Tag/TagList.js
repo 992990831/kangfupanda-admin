@@ -191,7 +191,6 @@ export function TagList() {
         <React.Fragment>
             <Row type="flex" justify='center' style={{marginTop:'10px', marginBottom:'5px'}}>
                 <Col span={6}>
-                   
                     <Input placeholder='请输入标签名' onChange={(input)=>{
                         setText(input.target.value);
                     }}></Input>

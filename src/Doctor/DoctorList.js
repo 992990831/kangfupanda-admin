@@ -7,6 +7,7 @@ import ImageUploader from '../Utils/ImageUploader';
 
 import './DoctorList.css';
 
+const { Option } = Select;
 const { TextArea } = Input;
 
 const layout = {
@@ -111,6 +112,9 @@ function DoctorList() {
 
   const addFormRef = useRef();
   const [users, setUsers] = useState([]);
+  //模拟登录用
+  const [userOpenId, setUserOpenId] = useState('');
+
   const [showAdd, setShowAdd] = useState(false);
   const [headpic, setHeadpic] = useState(null);
   const [detailimage, setDetailImage] = useState(null);
@@ -311,11 +315,34 @@ function DoctorList() {
 
   return (
     <React.Fragment>
-      <Row type="flex" justify='end'>
-        <Col>
+      <Row type="flex" justify='center' style={{ marginTop: '10px', marginBottom: '5px' }}>
+        <Col span={6}>
+          <Select style={{ width: '60%' }} onChange={(value) => {
+            setUserOpenId(value);
+          }}>
+            {
+              users.map(u => (
+                <Option key={u.id} value={u.openId}>{u.nickName}</Option>
+              ))
+            }
+          </Select>
+          <Button type="primary" onClick={() => {
+            window.open(`http://app.kangfupanda.com/#/home?openId=${userOpenId}`)
+          }}>模拟登录</Button>
+        </Col>
+        <Col span={3}>
+          
+        </Col>
+        <Col span={3}>
           <Button type="primary" onClick={showAddForm}>添加</Button>
         </Col>
       </Row>
+
+      {/* <Row type="flex" justify='end'>
+        <Col>
+          <Button type="primary" onClick={showAddForm}>添加</Button>
+        </Col>
+      </Row> */}
       <Table columns={columns} dataSource={users} 
         pagination={{
           current: pagination.current,
