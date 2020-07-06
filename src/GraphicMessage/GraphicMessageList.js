@@ -9,6 +9,11 @@ import { Constants } from '../Utils/Constants';
 
 import axios from 'axios';
 
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+
+import ImageCropper from '../Utils/ImageCropper';
+
 const { TextArea } = Input;
 const { CheckableTag } = Tag;
 
@@ -69,6 +74,8 @@ function GraphicMessageList() {
 
     const addFormRef = useRef();
     const [messages, setMessages] = useState([]);
+    //缓存封面照
+    const [poster, setPoster] = useState('');
     //用来缓存添加、修改界面的6个图片
     const [pics, setPics] = useState(['', '', '', '', '', '',]);
     const [audioes, setAudioes] = useState(['', '', '']);
@@ -78,6 +85,17 @@ function GraphicMessageList() {
     const [editRecord, setEditRecord] = useState({showEdit:false});
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+
+    //图片切割
+    const [src, setSrc] = useState(null);
+    const [crop, setCrop] = useState({
+        aspect: 1,
+        width: 50,
+        x: 0,
+        y: 0
+      });
+
+    const [croppedImageUrl, setCroppedImageUrl] = useState('');
 
     //只在初始化时需要出发，所以第二个参数为空
     useEffect(() => {
@@ -191,6 +209,7 @@ function GraphicMessageList() {
             author: values.author,
             name: values.name,
             text: values.text,
+            poster: poster,
             pic01: pics[0],
             pic02: pics[1],
             pic03: pics[2],
@@ -276,6 +295,8 @@ function GraphicMessageList() {
             audioes[2] = editRecord.audio03;
             setAudioes(audioes);
 
+            setPoster(`data:image/jpeg;base64,${editRecord.poster}`);
+
             addFormRef.current.setFieldsValue({
                 id: editRecord.id,
                 author: editRecord.author,
@@ -324,6 +345,76 @@ function GraphicMessageList() {
         audioes[2] = audio;
         setAudioes(audioes);
     }
+
+    //图片切割
+   const onSelectFile = e => {
+        if (e.target.files && e.target.files.length > 0) {
+            debugger;
+          const reader = new FileReader();
+          reader.addEventListener("load", () =>
+            setSrc({ src: reader.result })
+          );
+          console.log(reader.result);
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      };
+    
+      const onImageLoaded = (image, pixelCrop) => {
+        //this.imageRef = image;
+      };
+    
+      const   onCropComplete = (crop, pixelCrop) => {
+        //this.makeClientCrop(crop, pixelCrop);
+      };
+    
+      const onCropChange = crop => {
+        setCrop({ crop });
+      };
+    
+      const makeClientCrop = async (crop, pixelCrop) => {
+        if (this.imageRef && crop.width && crop.height) {
+          const croppedImageUrl = await this.getCroppedImg(
+            this.imageRef,
+            pixelCrop,
+            "newFile.jpeg"
+          );
+          this.setState({ croppedImageUrl });
+        }
+      }
+    
+      const  getCroppedImg = (image, pixelCrop, fileName) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
+        const ctx = canvas.getContext("2d");
+    
+        ctx.drawImage(
+          image,
+          pixelCrop.x,
+          pixelCrop.y,
+          pixelCrop.width,
+          pixelCrop.height,
+          0,
+          0,
+          pixelCrop.width,
+          pixelCrop.height
+        );
+    
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(blob => {
+            if (!blob) {
+              //reject(new Error('Canvas is empty'));
+              console.error("Canvas is empty");
+              return;
+            }
+            blob.name = fileName;
+            window.URL.revokeObjectURL(this.fileUrl);
+            this.fileUrl = window.URL.createObjectURL(blob);
+            resolve(this.fileUrl);
+          }, "image/jpeg");
+        });
+      }
+    
 
     return (
         <React.Fragment>
@@ -451,6 +542,29 @@ function GraphicMessageList() {
 
 
                             </Form.Item>
+                            <Form.Item name='poster' label='封面'>
+                                {/* <div>
+                                    <input type="file" onChange={onSelectFile} />
+                                </div>
+                                {src && (
+                                <ReactCrop
+                                    src={src}
+                                    crop={crop}
+                                    onImageLoaded={onImageLoaded}
+                                    onComplete={onCropComplete}
+                                    onChange={onCropChange}
+                                />
+                                )} */}
+                                {/* {croppedImageUrl && (
+                                    <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+                                )} */}
+                
+                                <ImageCropper onCrop={(imgBase64)=>{
+                                    setPoster(imgBase64);
+                                }}
+                                defaultImage={editRecord && editRecord.poster? `data:image/jpeg;base64,${editRecord.poster}`:''}
+                                ></ImageCropper>
+                            </Form.Item>
                             <Form.Item
                                 name="audio"
                                 label="音频"
@@ -484,3 +598,9 @@ function GraphicMessageList() {
 }
 
 export default withRouter(GraphicMessageList)
+
+
+function CropDemo({ src }) {
+    const [crop, setCrop] = useState({ aspect: 16 / 9 });
+    return <ReactCrop src={src} crop={crop} onChange={newCrop => setCrop(newCrop)} />;
+  }
