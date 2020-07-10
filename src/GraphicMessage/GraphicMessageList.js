@@ -44,12 +44,12 @@ function GraphicMessageList() {
             }
         },
         {
-            title: '图片1',
-            dataIndex: 'pic01',
-            key: 'pic01',
-            render: pic01 => (
+            title: '封面',
+            dataIndex: 'poster',
+            key: 'poster',
+            render: poster => (
                 <>
-                    <img src={`${Constants.ResourceUrl}/${pic01}`} alt="" className="graphicMessagePic" />
+                    <img src={`data:image/jpeg;base64,${poster}`} alt="" className="graphicMessagePic" />
                 </>
             ),
         },
