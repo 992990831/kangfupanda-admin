@@ -423,7 +423,16 @@ function GraphicMessageList() {
                     <Button type="primary" onClick={showAddForm}>添加</Button>
                 </Col>
             </Row>
-            <Table columns={columns} dataSource={messages} />
+            {/* 为了简单起见，这里的分页是前端分页 */}
+            {/* 分页控件参考：https://ant.design/components/pagination-cn/ */}
+            <Table columns={columns} dataSource={messages} 
+                pagination={{
+                    showSizeChanger: true,
+                    defaultCurrent: 1,
+                    defaultPageSize: 50,
+                    total: messages.length
+                }}
+            />
             <Modal
                 title='添加图文'
                 visible={showAdd || editRecord.showEdit}
