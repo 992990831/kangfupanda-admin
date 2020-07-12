@@ -49,7 +49,7 @@ export const PendingAuditList = () => {
         },
     ];
 
-    const [pagination, setPagination] = useState({current:1, pageSize:15, total:0});
+    const [pagination, setPagination] = useState({current:1, pageSize:100, total:0});
     const [comments, setComments] = useState([]);
     const [userOpenId, setUserOpenId] = useState('');
 
@@ -79,14 +79,19 @@ export const PendingAuditList = () => {
         })
     }
 
-   
-
     const onPaginationChange = (pageIndex, pageSize) => {
         pagination.current = pageIndex;
         pagination.pageSize = pageSize;
         setPagination(pagination);
         getList(pageIndex, pageSize);
     }    
+
+    const onShowSizeChange = (pageIndex, pageSize) => {
+        pagination.current = pageIndex;
+        pagination.pageSize = pageSize;
+        setPagination(pagination);
+        getList(pageIndex, pageSize);
+    }
 
     const Approve = (commentId)=>{
         axios(`${Constants.APIBaseUrl}/comments/audit/approve?commentId=${commentId}`, {
@@ -162,10 +167,16 @@ export const PendingAuditList = () => {
                     <Col span={24}>
                         <Table columns={columns} dataSource={comments}
                             pagination={{
+                                showSizeChanger: true,
+                                showQuickJumper: true,
                                 current: pagination.current,
                                 pageSize: pagination.pageSize,
                                 total: pagination.total,
                                 onChange: onPaginationChange,
+                                onShowSizeChange: onShowSizeChange,
+                                showTotal: ((total) => {
+                                    return `共 ${total} 条`;
+                                }),
                             }}
                         />
                     </Col>

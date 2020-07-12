@@ -119,7 +119,7 @@ function DoctorList() {
   const [headpic, setHeadpic] = useState(null);
   const [detailimage, setDetailImage] = useState(null);
 
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 100, total: 0 });
 
   //只在初始化时需要出发，所以第二个参数为空
   useEffect(() => {
@@ -139,6 +139,13 @@ function DoctorList() {
   }
 
   const onPaginationChange = (pageIndex, pageSize) => {
+    pagination.current = pageIndex;
+    pagination.pageSize = pageSize;
+    setPagination(pagination);
+    getList(pageIndex, pageSize);
+  }
+
+  const onShowSizeChange = (pageIndex, pageSize) => {
     pagination.current = pageIndex;
     pagination.pageSize = pageSize;
     setPagination(pagination);
@@ -343,12 +350,18 @@ function DoctorList() {
           <Button type="primary" onClick={showAddForm}>添加</Button>
         </Col>
       </Row> */}
-      <Table columns={columns} dataSource={users} 
+      <Table columns={columns} dataSource={users}
         pagination={{
+          showSizeChanger: true,
+          showQuickJumper: true,
           current: pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
           onChange: onPaginationChange,
+          onShowSizeChange: onShowSizeChange,
+          showTotal: ((total) => {
+            return `共 ${total} 条`;
+          }),
         }}
       />
       <Modal

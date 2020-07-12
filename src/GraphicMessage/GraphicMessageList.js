@@ -428,9 +428,13 @@ function GraphicMessageList() {
             <Table columns={columns} dataSource={messages} 
                 pagination={{
                     showSizeChanger: true,
+                    showQuickJumper: true,
                     defaultCurrent: 1,
-                    defaultPageSize: 50,
-                    total: messages.length
+                    defaultPageSize: 100,
+                    total: messages.length,
+                    showTotal: ((total) => {
+                        return `共 ${total} 条`;
+                    }),
                 }}
             />
             <Modal
@@ -607,9 +611,3 @@ function GraphicMessageList() {
 }
 
 export default withRouter(GraphicMessageList)
-
-
-function CropDemo({ src }) {
-    const [crop, setCrop] = useState({ aspect: 16 / 9 });
-    return <ReactCrop src={src} crop={crop} onChange={newCrop => setCrop(newCrop)} />;
-  }

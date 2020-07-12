@@ -108,7 +108,8 @@ export function FoundList() {
     ];
 
     const addFormRef = useRef();
-    const [pagination, setPagination] = useState({current:1, pageSize:10, total:0});
+    //pagination参见： https://ant.design/components/pagination-cn/
+    const [pagination, setPagination] = useState({current:1, pageSize:100, total:0});
     const [founds, setFounds] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
     const [headpic, setHeadpic] = useState(null);
@@ -271,6 +272,12 @@ export function FoundList() {
         getList(pageIndex, pageSize);
     }    
 
+    const onShowSizeChange = (pageIndex, pageSize) => {
+        pagination.current = pageIndex;
+        pagination.pageSize = pageSize;
+        setPagination(pagination);
+        getList(pageIndex, pageSize);
+    }
     return (
         <React.Fragment>
             <Row type="flex" justify='center' style={{marginTop:'10px', marginBottom:'5px'}}>
@@ -291,10 +298,16 @@ export function FoundList() {
             </Row>
             <Table columns={columns} dataSource={founds} 
             pagination={{
+                showSizeChanger: true,
+                showQuickJumper: true,
                 current: pagination.current,
                 pageSize: pagination.pageSize,
                 total: pagination.total,
                 onChange: onPaginationChange,
+                onShowSizeChange: onShowSizeChange,
+                showTotal: ((total) => {
+                    return `共 ${total} 条`;
+                  }),
             }}
             />
             <Modal

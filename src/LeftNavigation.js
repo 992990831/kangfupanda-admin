@@ -43,8 +43,6 @@ function LeftNavigation() {
         </SubMenu>
         <SubMenu key="sub2" icon={<LaptopOutlined />} title="发现页管理">
           <Menu.Item key="11">专家<Link to='/found' /></Menu.Item>
-          <Menu.Item key="12">产品<Link to='/' /></Menu.Item>
-          <Menu.Item key="13">活动<Link to='/' /></Menu.Item>
         </SubMenu>
         <SubMenu key="sub3" icon={<LaptopOutlined />} title={<Badge count={auditContext.state.count}>作品评论管理&nbsp;&nbsp;</Badge>}>
           <Menu.Item key="21">待精选<Link to='/audit/pending' /></Menu.Item>
@@ -54,7 +52,7 @@ function LeftNavigation() {
         <SubMenu key="sub4" icon={<LaptopOutlined />} title="用户管理">
           <Menu.Item key="31">专家审核<Link to='/doctorList' /></Menu.Item>
           <Menu.Item key="32">普通用户<Link to='/userlist' /></Menu.Item>
-          <Menu.Item key="33">访问量统计<Link to='/log' /></Menu.Item>
+          {/* <Menu.Item key="33">访问量统计<Link to='/log' /></Menu.Item> */}
         </SubMenu>
         <SubMenu key="sub5" icon={<LaptopOutlined />} title="官网">
           <Menu.Item key="41">图文+音频<Link to='/officialsite/videolist' /></Menu.Item>
