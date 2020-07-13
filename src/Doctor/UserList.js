@@ -20,6 +20,24 @@ const tailLayout = {
 };
 
 function UserList() {
+  
+
+  const addFormRef = useRef();
+  const [users, setUsers] = useState([]);
+  //模拟登录用
+  const [userOpenId, setUserOpenId] = useState('');
+
+  const [showAdd, setShowAdd] = useState(false);
+  const [headpic, setHeadpic] = useState(null);
+  const [detailimage, setDetailImage] = useState(null);
+
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 100, total: 0 });
+
+  //只在初始化时需要出发，所以第二个参数为空
+  useEffect(() => {
+    getList(pagination.current, pagination.pageSize, 'descend');
+  }, [])
+
   const columns = [
     {
       title: '昵称',
@@ -45,20 +63,6 @@ function UserList() {
       width: '100px',
       key: 'usertype',
     },
-    // {
-    //   title: '自建',
-    //   key: 'openId',
-    //   dataIndex: 'openId',
-    //   width:'100px',
-    //   render: (openId) => (
-    //      <div> 
-    //       {
-    //           (openId && openId.length>32) ? <span>是</span>:<span>否</span>
-    //       }
-    //      </div>
-
-    //   ),
-    // },
     {
       title: '简介',
       dataIndex: 'note',
@@ -68,7 +72,14 @@ function UserList() {
       title: '最后访问时间',
       dataIndex: 'lastVisitedAt',
       key: 'lastVisitedAt',
-      width: '120px'
+      width: '120px',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.lastVisitedAt - b.lastVisitedAt,
+      render: text => (
+        <>
+          {text}
+        </>
+      ),
     },
     {
       title: '前一周访问量',
@@ -110,24 +121,22 @@ function UserList() {
     },
   ];
 
-  const addFormRef = useRef();
-  const [users, setUsers] = useState([]);
-  //模拟登录用
-  const [userOpenId, setUserOpenId] = useState('');
+  const getList = (pageIndex, pageSize, order) => {
+    if(!pageIndex)
+    {
+      pageIndex = pagination.current;
+    }
+    if(!pageSize)
+    {
+      pageSize = pagination.pageSize;
+    }
 
-  const [showAdd, setShowAdd] = useState(false);
-  const [headpic, setHeadpic] = useState(null);
-  const [detailimage, setDetailImage] = useState(null);
+    if(!order)
+    {
+      order='';
+    }
 
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 100, total: 0 });
-
-  //只在初始化时需要出发，所以第二个参数为空
-  useEffect(() => {
-    getList();
-  }, [])
-
-  const getList = () => {
-    axios(`${Constants.APIBaseUrl}/user/admin/list/user?pageIndex=${pagination.current}&pageSize=${pagination.pageSize}`, {
+    axios(`${Constants.APIBaseUrl}/user/admin/list/user?pageIndex=${pageIndex}&pageSize=${pageSize}&order=${order}`, {
       headers: { 'Content-Type': 'application/json' }
     }).then(res => {
       pagination.total = res.data.count;
@@ -152,6 +161,13 @@ function UserList() {
     setPagination(pagination);
     getList(pageIndex, pageSize);
   }
+  
+  const onTableChange = (pagination, filters, sorter) => {
+    pagination.current = pagination.current;
+    pagination.pageSize = pagination.pageSize;
+    setPagination(pagination);
+    getList(pagination.current, pagination.pageSize, sorter.order);
+  };
 
   const showAddForm = () => {
     setShowAdd(true);
@@ -322,16 +338,16 @@ function UserList() {
         </Col>
       </Row>
 
-      <Table columns={columns} dataSource={users}
+      <Table columns={columns} dataSource={users}  onChange={onTableChange} showSorterTooltip={false}
         pagination={{
           showSizeChanger: true,
           showQuickJumper: true,
           current: pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
-          onChange: onPaginationChange,
-          onChange: onPaginationChange,
-          onShowSizeChange: onShowSizeChange,
+          //有了Table->onTableChange，就不需要这两个了
+          // onChange: onPaginationChange,
+          // onShowSizeChange: onShowSizeChange,
           showTotal: ((total) => {
             return `共 ${total} 条`;
           }),
