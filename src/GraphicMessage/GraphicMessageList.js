@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom'
-import { Row, Col, Button, Table, Form, List, Divider, Modal, AutoComplete, Tag, Space, Select, Input, notification, Popconfirm } from 'antd';
+import { Row, Col, Button, Table, Form, List, Divider, Modal, AutoComplete, Tag, Space, Spin, Select, Input, notification, Popconfirm } from 'antd';
 import './GraphicMessage.css';
 
 import ImageUploader from '../Utils/ImageUploader';
@@ -56,6 +56,7 @@ function GraphicMessageList() {
         {
             title: '操作',
             key: 'action',
+            width:'180px',
             render: (text, record) => (
                 <Space size="middle">
                     <a onClick={(e) => {
@@ -67,6 +68,26 @@ function GraphicMessageList() {
                     }}>
                         <a href="javascript:;">删除</a>
                     </Popconfirm>
+                    {
+                        record.isTop? 
+                        <Popconfirm title="确定取消置顶?" onConfirm={() => {
+                            let result = unsetTop(record.id);
+                            result.then( res =>{
+                                getList();
+                            } )
+                        }}>
+                            <a href="javascript:;">取消置顶</a>
+                        </Popconfirm> : 
+                        <Popconfirm title="确定置顶?" onConfirm={() => {
+                            let result = setTop(record.id);
+                            result.then( res =>{
+                                getList();
+                            } )
+                        }}>
+                            <a href="javascript:;">置顶</a>
+                        </Popconfirm> 
+                    }
+                    
                 </Space>
             ),
         },
@@ -85,6 +106,9 @@ function GraphicMessageList() {
     const [editRecord, setEditRecord] = useState({showEdit:false});
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+
+    //列表加载状态
+    const [loading, setLoading] = useState(false);
 
     //图片切割
     const [src, setSrc] = useState(null);
@@ -132,8 +156,24 @@ function GraphicMessageList() {
         })
     }
 
+    const setTop = async (postId)=>{
+        let res = await axios.get(`${Constants.APIBaseUrl}/message/settop/${postId}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        return res;
+    }
+
+    const unsetTop = async (postId)=>{
+        let res = await axios.get(`${Constants.APIBaseUrl}/message/unsettop/${postId}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        return res;
+    }
 
     const getList = () => {
+        setLoading(true);
         axios(`${Constants.APIBaseUrl}/message/list`, {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {
@@ -141,7 +181,11 @@ function GraphicMessageList() {
                 return { ...msg, key: msg.id }
             })
             setMessages(msgs);
-        })
+            setLoading(false);
+        }).catch((error) => {
+            setLoading(false);
+        });
+
     }
 
     const GetUserList = () => {
@@ -425,18 +469,21 @@ function GraphicMessageList() {
             </Row>
             {/* 为了简单起见，这里的分页是前端分页 */}
             {/* 分页控件参考：https://ant.design/components/pagination-cn/ */}
-            <Table columns={columns} dataSource={messages} 
-                pagination={{
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                    defaultCurrent: 1,
-                    defaultPageSize: 100,
-                    total: messages.length,
-                    showTotal: ((total) => {
-                        return `共 ${total} 条`;
-                    }),
-                }}
-            />
+            <Spin spinning={loading}>
+                <Table columns={columns} dataSource={messages} 
+                    pagination={{
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        defaultCurrent: 1,
+                        defaultPageSize: 100,
+                        total: messages.length,
+                        showTotal: ((total) => {
+                            return `共 ${total} 条`;
+                        }),
+                    }}
+                />
+            </Spin>
+            
             <Modal
                 title='添加图文'
                 visible={showAdd || editRecord.showEdit}
