@@ -49,7 +49,8 @@ function GraphicMessageList() {
             key: 'poster',
             render: poster => (
                 <>
-                    <img src={`data:image/jpeg;base64,${poster}`} alt="" className="graphicMessagePic" />
+                    {/* <img src={`data:image/jpeg;base64,${poster}`} alt="" className="graphicMessagePic" /> */}
+                    <img src={`${Constants.ResourceUrl}${poster}`} alt="" className="graphicMessagePic" />
                 </>
             ),
         },
@@ -622,7 +623,8 @@ function GraphicMessageList() {
                                 <ImageCropper onCrop={(imgBase64)=>{
                                     setPoster(imgBase64);
                                 }}
-                                defaultImage={editRecord && editRecord.poster? `data:image/jpeg;base64,${editRecord.poster}`:''}
+                                //defaultImage={editRecord && editRecord.poster? `data:image/jpeg;base64,${editRecord.poster}`:''}
+                                defaultImage={editRecord && editRecord.poster? `${Constants.ResourceUrl}${editRecord.poster}`:''}
                                 ></ImageCropper>
                             </Form.Item>
                             <Form.Item
