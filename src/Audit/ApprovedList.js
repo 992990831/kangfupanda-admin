@@ -22,9 +22,16 @@ export const ApprovedList = () => {
             ),
         },
         {
+            title: '作品标题',
+            dataIndex: 'title',
+            key: 'title',
+            width:'200px',
+        },
+        {
             title: '评论内容',
             dataIndex: 'comment_content',
             key: 'comment_content',
+            width:'500px'
         },
         {
             title: '操作',
