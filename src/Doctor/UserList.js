@@ -28,6 +28,9 @@ function UserList() {
   const [userOpenId, setUserOpenId] = useState('');
 
   const [showAdd, setShowAdd] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [qrCode, setQRCode] = useState('');
+
   const [headpic, setHeadpic] = useState(null);
   const [detailimage, setDetailImage] = useState(null);
 
@@ -99,18 +102,12 @@ function UserList() {
       width: '150px',
       render: (text, record) => (
         <Space size="middle">
-          {/* {
-            !record.verified? 
-            <a onClick={(e) => {
-              verifyUser(record.openId);
-            }}>认证</a>:
-            <a onClick={(e) => {
-              unverifyUser(record.openId);
-            }}>取消认证</a>
-          } */}
           <a onClick={(e) => {
             showEditUser(record);
           }}>修改</a>
+          <a onClick={(e) => {
+            getQRCode(record.openId);
+          }}>二维码</a>
           {/* <Popconfirm title="确定删除?" onConfirm={() => {
             DeleteUser(record.openId);
           }}>
@@ -120,6 +117,15 @@ function UserList() {
       ),
     },
   ];
+
+  const getQRCode=(openId) => {
+    axios(`${Constants.APIBaseUrl}/user/mini/qrcode?openId=${openId}`, {
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => {
+      setShowQR(true);
+      setQRCode(res.data.Data);
+    })
+  }
 
   const getList = (pageIndex, pageSize, order) => {
     if(!pageIndex)
@@ -470,6 +476,26 @@ function UserList() {
 
           </Col>
         </Row>
+      </Modal>
+      <Modal maskClosable={true} visible={showQR}
+        footer={[
+          <Button key="back" onClick={() => {
+            setShowQR(false);
+            setQRCode(null);
+          }}>
+            关闭
+            </Button>
+        ]}
+        // onOk={this.handleOk.bind(this)}
+        onCancel={() => {
+          setShowQR(false);
+          setQRCode(null);
+        }}>
+          {
+            qrCode?
+            <img src={`data:image/jpeg;base64,${qrCode}`} />: <></>
+          }
+          
       </Modal>
     </React.Fragment>
   )
