@@ -56,7 +56,7 @@ function UserList() {
       width: '100px',
       render: headpic => (
         <>
-          <img src={headpic.substring(0, 4) == 'http' ? headpic : `${Constants.ResourceUrl}${headpic}`} alt="" className="doctorHeadPic" />
+          <img src={ headpic && headpic.substring(0, 4) == 'http' ? headpic : `${Constants.ResourceUrl}${headpic}`} alt="" className="doctorHeadPic" />
         </>
       ),
     },
