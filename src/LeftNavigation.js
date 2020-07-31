@@ -42,7 +42,9 @@ function LeftNavigation() {
           <Menu.Item key="3">标签管理<Link to='/tag' /></Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<LaptopOutlined />} title="发现页管理">
-          <Menu.Item key="11">专家<Link to='/found' /></Menu.Item>
+          <Menu.Item key="11">推荐<Link to='/found/recommend' /></Menu.Item>
+          <Menu.Item key="12">关注<Link to='/found/follow' /></Menu.Item>
+          <Menu.Item key="13">参加<Link to='/found/join' /></Menu.Item>
         </SubMenu>
         <SubMenu key="sub3" icon={<LaptopOutlined />} title={<Badge count={auditContext.state.count}>作品评论管理&nbsp;&nbsp;</Badge>}>
           <Menu.Item key="21">待精选<Link to='/audit/pending' /></Menu.Item>
