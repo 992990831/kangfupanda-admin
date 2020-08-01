@@ -32,7 +32,7 @@ function UserList() {
   const [qrCode, setQRCode] = useState('');
 
   const [headpic, setHeadpic] = useState(null);
-  const [detailimage, setDetailImage] = useState(null);
+  const [certificate, setCertificate] = useState(null);
 
   const [pagination, setPagination] = useState({ current: 1, pageSize: 100, total: 0 });
 
@@ -195,7 +195,7 @@ function UserList() {
 
   const addUser = (user) => {
     user.headpic = headpic;
-    user.detailimage = detailimage;
+    user.certificate = certificate;
     axios.post(`${Constants.APIBaseUrl}/user/add`, user, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -222,7 +222,7 @@ function UserList() {
   //添加后清空表单值
   const ClearForm = () => {
     setHeadpic('');
-    setDetailImage('');
+    setCertificate('');
     addFormRef.current.resetFields();
   }
 
@@ -230,12 +230,12 @@ function UserList() {
     setShowAdd(true);
 
     setHeadpic(user.headpic);
-    setDetailImage(user.detailimage);
+    setCertificate(user.certificate);
 
     //必须有个延迟，等Form弹出来，否则addFormRef为空
     window.setTimeout(() => {
       setHeadpic(user.headpic);
-      setDetailImage(user.detailimage);
+      setCertificate(user.certificate);
       addFormRef.current.setFieldsValue({
         openId: user.openId,
         nickname: user.nickName,
@@ -243,7 +243,7 @@ function UserList() {
         city: user.city,
         sex: user.sex,
         headpic: user.headpic,
-        detailimage: user.detailimage,
+        certificate: user.certificate,
         expertise: user.expertise,
         usertype: user.usertype,
         note: user.note
@@ -255,7 +255,7 @@ function UserList() {
     var values = addFormRef.current.getFieldsValue();
 
     values.headpic = headpic;
-    values.detailimage = detailimage;
+    values.certificate = certificate;
     axios.post(`${Constants.APIBaseUrl}/user/update`, values, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -283,8 +283,8 @@ function UserList() {
     setHeadpic(headpic);
   }
 
-  const handleAfterUploadDetailImage = (detailimage) => {
-    setDetailImage(detailimage);
+  const handleAfterUploadCert = (cert) => {
+    setCertificate(cert);
   }
 
   const verifyUser = (openId) => {
@@ -461,17 +461,17 @@ function UserList() {
               >
                 <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic && headpic.startsWith('http') ? headpic : `${Constants.ResourceUrl}${headpic}`}></ImageUploader>
               </Form.Item>
-              <Form.Item
-                name="detailimage"
-                label="详情照"
+              {/* <Form.Item
+                name="certificate"
+                label="资质证书"
                 rules={[
                   {
                     required: true,
                   },
                 ]}
               >
-                <ImageUploader afterUpload={handleAfterUploadDetailImage} defaultImage={detailimage ? `${Constants.ResourceUrl}${detailimage}` : null}></ImageUploader>
-              </Form.Item>
+                <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCert} defaultImage={certificate ? `${Constants.ResourceUrl}${certificate}` : null}></ImageUploader>
+              </Form.Item> */}
             </Form>
 
           </Col>
