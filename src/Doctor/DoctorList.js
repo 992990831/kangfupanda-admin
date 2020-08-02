@@ -31,6 +31,22 @@ function DoctorList() {
 
   const [headpic, setHeadpic] = useState(null);
   const [certificate, setCertificate] = useState(null);
+  const [certificate1, setCertificate1] = useState(null);
+  const [certificate2, setCertificate2] = useState(null);
+  const [certificate3, setCertificate3] = useState(null);
+  const [certificate4, setCertificate4] = useState(null);
+  const [certificate5, setCertificate5] = useState(null);
+  const [certificate6, setCertificate6] = useState(null);
+  const [certificate7, setCertificate7] = useState(null);
+
+  const [certtext, setCertText] = useState(null);
+  const [cert1text, setCert1Text] = useState(null);
+  const [cert2text, setCert2Text] = useState(null);
+  const [cert3text, setCert3Text] = useState(null);
+  const [cert4text, setCert4Text] = useState(null);
+  const [cert5text, setCert5Text] = useState(null);
+  const [cert6text, setCert6Text] = useState(null);
+  const [cert7text, setCert7Text] = useState(null);
 
   // const [sortedInfo, setSortedInfo] = useState({
   //   order: 'descend',
@@ -213,6 +229,23 @@ function DoctorList() {
   const addUser = (user) =>{
     user.headpic = headpic;
     user.certificate = certificate;
+    user.certificate1 = certificate1;
+    user.certificate2 = certificate2;
+    user.certificate3 = certificate3;
+    user.certificate4 = certificate4;
+    user.certificate5 = certificate5;
+    user.certificate6 = certificate6;
+    user.certificate7 = certificate7;
+
+    user.certtext = certtext;
+    user.cert1text = cert1text;
+    user.cert2text = cert2text;
+    user.cert3text = cert3text;
+    user.cert4text = cert4text;
+    user.cert5text = cert5text;
+    user.cert6text = cert6text;
+    user.cert7text = cert7text;
+
     axios.post(`${Constants.APIBaseUrl}/user/add`, user, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -240,6 +273,23 @@ function DoctorList() {
   const ClearForm = () => {
     setHeadpic('');
     setCertificate('');
+    setCertificate1('');
+    setCertificate2('');
+    setCertificate3('');
+    setCertificate4('');
+    setCertificate5('');
+    setCertificate6('');
+    setCertificate7('');
+
+    setCertText('');
+    setCert1Text('');
+    setCert2Text('');
+    setCert3Text('');
+    setCert4Text('');
+    setCert5Text('');
+    setCert6Text('');
+    setCert7Text('');
+
     addFormRef.current.resetFields();
   }
 
@@ -268,13 +318,27 @@ function DoctorList() {
   {
       setShowAdd(true);
 
-      setHeadpic(user.headpic);
-      setCertificate(user.certificate);
-
       //必须有个延迟，等Form弹出来，否则addFormRef为空
       window.setTimeout(()=>{
         setHeadpic(user.headpic);
         setCertificate(user.certificate);
+        setCertificate1(user.certificate1);
+        setCertificate2(user.certificate2);
+        setCertificate3(user.certificate3);
+        setCertificate4(user.certificate4);
+        setCertificate5(user.certificate5);
+        setCertificate6(user.certificate6);
+        setCertificate7(user.certificate7);
+        
+        setCertText(user.certText);
+        setCert1Text(user.cert1Text);
+        setCert2Text(user.cert2Text);
+        setCert3Text(user.cert3Text);
+        setCert4Text(user.cert4Text);
+        setCert5Text(user.cert5Text);
+        setCert6Text(user.cert6Text);
+        setCert7Text(user.cert7Text);
+
         addFormRef.current.setFieldsValue({
           openId: user.openId,
           nickname: user.nickName,
@@ -283,6 +347,22 @@ function DoctorList() {
           sex: user.sex,
           headpic: user.headpic,
           certificate: user.certificate,
+          certtext: user.certText,
+          certificate1: user.certificate1,
+          cert1text: user.cert1Text,
+          certificate2: user.certificate2,
+          cert2text: user.cert2Text,
+          certificate3: user.certificate3,
+          cert3text: user.cert3Text,
+          certificate4: user.certificate4,
+          cert4text: user.cert4Text,
+          certificate5: user.certificate5,
+          cert5text: user.cert5Text,
+          certificate6: user.certificate6,
+          cert6text: user.cert6Text,
+          certificate7: user.certificate7,
+          cert7text: user.cert7Text,
+
           expertise: user.expertise,
           usertype: user.usertype,
           note: user.note
@@ -292,10 +372,28 @@ function DoctorList() {
 
   const UpdateUser = () =>
   {
+    debugger;
     var values = addFormRef.current.getFieldsValue();
 
     values.headpic = headpic;
     values.certificate = certificate;
+    values.certificate1 = certificate1;
+    values.certificate2 = certificate2;
+    values.certificate3 = certificate3;
+    values.certificate4 = certificate4;
+    values.certificate5 = certificate5;
+    values.certificate6 = certificate6;
+    values.certificate7 = certificate7;
+
+    values.certtext = certtext;
+    values.cert1text = cert1text;
+    values.cert2text = cert2text;
+    values.cert3text = cert3text;
+    values.cert4text = cert4text;
+    values.cert5text = cert5text;
+    values.cert6text = cert6text;
+    values.cert7text = cert7text;
+
     axios.post(`${Constants.APIBaseUrl}/user/update`, values, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -325,6 +423,114 @@ function DoctorList() {
 
   const handleAfterUploadCertificate = (certificate) => {
     setCertificate(certificate);
+  }
+
+  const handleAfterUploadCertificate1 = (certificate) => {
+    setCertificate1(certificate);
+  }
+
+  const handleAfterUploadCertificate2 = (certificate) => {
+    setCertificate2(certificate);
+  }
+
+  const handleAfterUploadCertificate3 = (certificate) => {
+    setCertificate3(certificate);
+  }
+
+  const handleAfterUploadCertificate4 = (certificate) => {
+    setCertificate4(certificate);
+  }
+
+  const handleAfterUploadCertificate5 = (certificate) => {
+    setCertificate5(certificate);
+  }
+
+  const handleAfterUploadCertificate6 = (certificate) => {
+    setCertificate6(certificate);
+  }
+
+  const handleAfterUploadCertificate7 = (certificate) => {
+    setCertificate7(certificate);
+  }
+
+  const onCertTextChange = (obj) => {
+    setCertText(obj.target.value);
+  }
+
+  const onCert1TextChange = (obj) => {
+    setCert1Text(obj.target.value);
+  }
+
+  const onCert2TextChange = (obj) => {
+    setCert2Text(obj.target.value);
+  }
+
+  const onCert3TextChange = (obj) => {
+    setCert3Text(obj.target.value);
+  }
+
+  const onCert4TextChange = (obj) => {
+    setCert4Text(obj.target.value);
+  }
+
+  const onCert5TextChange = (obj) => {
+    setCert5Text(obj.target.value);
+  }
+
+  const onCert6TextChange = (obj) => {
+    setCert6Text(obj.target.value);
+  }
+
+  const onCert7TextChange = (obj) => {
+    setCert7Text(obj.target.value);
+  }
+
+  const clearCert = ()=>
+  {
+    setCertificate(null);
+    setCertText(null);
+  }
+
+  const clearCert1 = ()=>
+  {
+    setCertificate1(null);
+    setCert1Text(null);
+  }
+
+  const clearCert2 = ()=>
+  {
+    setCertificate2(null);
+    setCert2Text(null);
+  }
+
+  const clearCert3 = ()=>
+  {
+    setCertificate3(null);
+    setCert3Text(null);
+  }
+
+  const clearCert4 = ()=>
+  {
+    setCertificate4(null);
+    setCert4Text(null);
+  }
+
+  const clearCert5 = ()=>
+  {
+    setCertificate5(null);
+    setCert5Text(null);
+  }
+
+  const clearCert6 = ()=>
+  {
+    setCertificate6(null);
+    setCert6Text(null);
+  }
+
+  const clearCert7 = ()=>
+  {
+    setCertificate7(null);
+    setCert7Text(null);
   }
 
   const verifyUser = (openId) => {
@@ -508,14 +714,107 @@ function DoctorList() {
                 </Form.Item>
                 <Form.Item
                   name="certificate"
-                  label="资质证书"
+                  label="资质证书1"
                   rules={[
                     {
                       required: true,
                     },
                   ]}
                 >
+                  <input onChange={onCertTextChange} defaultValue={certtext} style={{width:'100%'}} />
                   <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate} defaultImage={certificate? `${Constants.ResourceCertUrl}${certificate}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate1"
+                  label="资质证书2"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert1TextChange} defaultValue={cert1text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate1} defaultImage={certificate1? `${Constants.ResourceCertUrl}${certificate1}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert1}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate2"
+                  label="资质证书3"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert2TextChange} defaultValue={cert2text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate2} defaultImage={certificate2? `${Constants.ResourceCertUrl}${certificate2}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert2}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate3"
+                  label="资质证书4"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert3TextChange} defaultValue={cert3text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate3} defaultImage={certificate3? `${Constants.ResourceCertUrl}${certificate3}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert3}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate4"
+                  label="资质证书5"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert4TextChange} defaultValue={cert4text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate4} defaultImage={certificate4? `${Constants.ResourceCertUrl}${certificate4}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert4}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate5"
+                  label="资质证书6"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert5TextChange} defaultValue={cert5text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate5} defaultImage={certificate5? `${Constants.ResourceCertUrl}${certificate5}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert5}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate6"
+                  label="资质证书7"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert6TextChange} defaultValue={cert6text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate6} defaultImage={certificate6? `${Constants.ResourceCertUrl}${certificate6}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert6}>清除</a>
+                </Form.Item>
+                <Form.Item
+                  name="certificate7"
+                  label="资质证书8"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <input onChange={onCert7TextChange} defaultValue={cert7text} style={{width:'100%'}} />
+                  <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate7} defaultImage={certificate7? `${Constants.ResourceCertUrl}${certificate7}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearCert7}>清除</a>
                 </Form.Item>
               </Form>
 
