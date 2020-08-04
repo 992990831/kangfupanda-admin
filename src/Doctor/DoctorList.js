@@ -4,6 +4,7 @@ import { Row, Col, Button, Table, Form, Popconfirm, Modal, message, Tag, Space, 
 import axios from 'axios';
 import { Constants } from '../Utils/Constants';
 import ImageUploader from '../Utils/ImageUploader';
+import VideoUploader from '../Utils/VideoUploader';
 
 import './DoctorList.css';
 
@@ -47,6 +48,9 @@ function DoctorList() {
   const [cert5text, setCert5Text] = useState(null);
   const [cert6text, setCert6Text] = useState(null);
   const [cert7text, setCert7Text] = useState(null);
+
+  const [profilevideo, setProfilevideo] = useState(null);
+  const [profilevideoposter, setProfilevideoPoster] = useState(null);
 
   // const [sortedInfo, setSortedInfo] = useState({
   //   order: 'descend',
@@ -245,6 +249,8 @@ function DoctorList() {
     user.cert5text = cert5text;
     user.cert6text = cert6text;
     user.cert7text = cert7text;
+    user.profilevideo = profilevideo;
+    user.profilevideoposter = profilevideoposter;
 
     axios.post(`${Constants.APIBaseUrl}/user/add`, user, {
       headers: { 'Content-Type': 'application/json' }
@@ -289,6 +295,8 @@ function DoctorList() {
     setCert5Text('');
     setCert6Text('');
     setCert7Text('');
+    setProfilevideo('');
+    setProfilevideoPoster('');
 
     addFormRef.current.resetFields();
   }
@@ -339,6 +347,9 @@ function DoctorList() {
         setCert6Text(user.cert6Text);
         setCert7Text(user.cert7Text);
 
+        setProfilevideo(user.profilevideo);
+        setProfilevideoPoster(user.profilevideoposter);
+
         addFormRef.current.setFieldsValue({
           openId: user.openId,
           nickname: user.nickName,
@@ -362,6 +373,9 @@ function DoctorList() {
           cert6text: user.cert6Text,
           certificate7: user.certificate7,
           cert7text: user.cert7Text,
+
+          profilevideo: user.profilevideo,
+          profilevideoposter: user.profilevideoposter,
 
           expertise: user.expertise,
           usertype: user.usertype,
@@ -393,6 +407,9 @@ function DoctorList() {
     values.cert5text = cert5text;
     values.cert6text = cert6text;
     values.cert7text = cert7text;
+
+    values.profilevideo = profilevideo;
+    values.profilevideoposter = profilevideoposter;
 
     axios.post(`${Constants.APIBaseUrl}/user/update`, values, {
       headers: { 'Content-Type': 'application/json' }
@@ -485,6 +502,14 @@ function DoctorList() {
     setCert7Text(obj.target.value);
   }
 
+  const handleAfterUploadProfilevideo = (video) => {
+    setProfilevideo(video);
+  }
+
+  const handleAfterUploadProfilevideoPoster = (poster) => {
+    setProfilevideoPoster(poster);
+  }
+
   const clearCert = ()=>
   {
     setCertificate(null);
@@ -531,6 +556,12 @@ function DoctorList() {
   {
     setCertificate7(null);
     setCert7Text(null);
+  }
+
+  const clearProfilevideo = ()=>
+  {
+    setProfilevideoPoster(null);
+    setProfilevideo(null);
   }
 
   const verifyUser = (openId) => {
@@ -815,6 +846,31 @@ function DoctorList() {
                   <input onChange={onCert7TextChange} defaultValue={cert7text} style={{width:'100%'}} />
                   <ImageUploader uploadUrl="/video/UploadDoctorCert" afterUpload={handleAfterUploadCertificate7} defaultImage={certificate7? `${Constants.ResourceCertUrl}${certificate7}` : null}></ImageUploader>
                   <a href="javascript:void(0)" onClick={clearCert7}>清除</a>
+                </Form.Item>
+
+
+                <Form.Item
+                  name="profilevideo"
+                  label="介绍录像"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <VideoUploader uploadUrl="/video/UploadProfilevideo" afterUpload={handleAfterUploadProfilevideo} ></VideoUploader>
+                </Form.Item>
+                <Form.Item
+                  name="profilevideoposter"
+                  label="录像封面"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <ImageUploader uploadUrl="/video/UploadProfilevideo" afterUpload={handleAfterUploadProfilevideoPoster} defaultImage={profilevideoposter? `${Constants.ResourceProfileVideoUrl}${profilevideoposter}` : null}></ImageUploader>
+                  <a href="javascript:void(0)" onClick={clearProfilevideo}>清除</a>
                 </Form.Item>
               </Form>
 
