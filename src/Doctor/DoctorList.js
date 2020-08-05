@@ -6,6 +6,8 @@ import { Constants } from '../Utils/Constants';
 import ImageUploader from '../Utils/ImageUploader';
 import VideoUploader from '../Utils/VideoUploader';
 
+import ImageCropper from '../Utils/ImageCropper';
+
 import './DoctorList.css';
 
 const { Option } = Select;
@@ -386,7 +388,6 @@ function DoctorList() {
 
   const UpdateUser = () =>
   {
-    debugger;
     var values = addFormRef.current.getFieldsValue();
 
     values.headpic = headpic;
@@ -741,7 +742,12 @@ function DoctorList() {
                     },
                   ]}
                 >
-                  <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic && headpic.startsWith('http')? headpic: `${Constants.ResourceUrl}${headpic}`}></ImageUploader>
+                  <ImageCropper onCrop={(imgBase64)=>{
+                                    setHeadpic(imgBase64);
+                                }}
+                                defaultImage={headpic && headpic.substring(0, 4) == 'http'? headpic: `${Constants.ResourceUrl}${headpic}`}
+                               aspect={1}  ></ImageCropper>
+                  {/* <ImageUploader afterUpload={handleAfterUploadImage} defaultImage={headpic && headpic.startsWith('http')? headpic: `${Constants.ResourceUrl}${headpic}`}></ImageUploader> */}
                 </Form.Item>
                 <Form.Item
                   name="certificate"

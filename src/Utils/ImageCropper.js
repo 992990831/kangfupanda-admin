@@ -93,6 +93,25 @@ class ImageCropper extends PureComponent {
     // });
   }
 
+  componentDidMount(){
+    let aspect = 7/5;
+    if(this.props.aspect)
+    {
+      aspect = this.props.aspect;
+      this.setState({
+        crop: {
+          aspect: aspect,
+          x: 0,
+          y: 0,
+          width: 160,
+          height: 160,
+        }
+      });
+    }
+
+   
+  }
+
   componentWillReceiveProps(nextProp){
     if(nextProp.defaultImage)
     {
@@ -100,6 +119,22 @@ class ImageCropper extends PureComponent {
         croppedImageUrl: nextProp.defaultImage
       });
     }
+    
+    // let aspect = 7/5;
+    // if(this.props.aspect)
+    // {
+    //   aspect = this.props.aspect;
+    // }
+
+    // this.setState({
+    //   crop: {
+    //     aspect: aspect,
+    //     x: 0,
+    //     y: 0,
+    //     width: 280,
+    //     height: 200,
+    //   }
+    // });
     
   }
    
@@ -153,9 +188,12 @@ class ImageCropper extends PureComponent {
             onChange={this.onCropChange}
           />
         )}
-        {croppedImageUrl && (
+        {croppedImageUrl?
+
           <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-        )}
+          :
+          <></>
+        }
       </div>
     );
   }
