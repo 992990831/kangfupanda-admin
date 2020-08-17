@@ -61,6 +61,9 @@ function LeftNavigation() {
           {/* <Menu.Item key="12">图文<Link to='/officialsite/graphisList' /></Menu.Item> */}
           <Menu.Item key="42">专家<Link to='/officialsite/doctorList' /></Menu.Item>
         </SubMenu>
+        <SubMenu key="sub6" icon={<LaptopOutlined />} title="公众号文章">
+          <Menu.Item key="61">图文<Link to='/wechat/news' /></Menu.Item>
+        </SubMenu>
       </Menu>
 
   );

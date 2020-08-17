@@ -15,6 +15,7 @@ import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
 import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
 import { FoundList, FollowList, JoinList } from './Found';
+import { NewsList } from './WeChat';
 
 import { TagList } from './Tag';
 import { ApiLogList } from './ApiLog';
@@ -94,6 +95,7 @@ function App() {
                   <Route exact path="/audit/pending" component={PendingAuditList} />
                   <Route exact path="/audit/approved" component={ApprovedList} />
                   <Route exact path="/audit/rejected" component={RejectedList} />
+                  <Route exact path="/wechat/news" component={NewsList} />
                 </Switch>
               </Layout>
             </Layout>
