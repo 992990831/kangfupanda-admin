@@ -64,7 +64,7 @@ export const NewsList = () => {
             render: (text, record) => (
                 <Space size="middle">
                     <Popconfirm title="确定发布?" onConfirm={() => {
-                       
+                       postMessage(record);
                     }}>
                         <a href="javascript:;">发布到小程序</a>
                     </Popconfirm>
@@ -111,6 +111,29 @@ export const NewsList = () => {
 
         item.thumb_url = `data:image/jpeg;base64,${imgBase64.data}`;
         setABC(imgBase64.data);
+    }
+
+    const postMessage = (news) => {
+        axios.post(`${Constants.APIBaseUrl}/wechat/add`, {
+            "name": news.title,
+            "text": news.digest,
+            "poster": news.thumb_url,
+            "wechatMediaId": news.thumb_media_id,
+            "wechatUrl": news.url
+        }, {
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => {
+            debugger;
+            notification.open({
+                message: res.data.Message,
+                description:
+                res.data.Message,
+                onClick: () => {
+                    //console.log('Notification Clicked!');
+                },
+                duration: 2
+            });
+        });
     }
 
     // const getList = (token) => {
