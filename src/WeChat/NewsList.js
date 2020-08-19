@@ -84,7 +84,6 @@ export const NewsList = () => {
                 return { ...news.content.news_item[0], key: news.media_id }
             })
 
-
             news.forEach(item => {
                 getImage(item);
             });
@@ -115,6 +114,7 @@ export const NewsList = () => {
 
     const postMessage = (news) => {
         axios.post(`${Constants.APIBaseUrl}/wechat/add`, {
+            "author": news.author,
             "name": news.title,
             "text": news.digest,
             "poster": news.thumb_url,
