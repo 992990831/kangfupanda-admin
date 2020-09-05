@@ -40,6 +40,7 @@ function LeftNavigation() {
           <Menu.Item key="1">图文+音频审核<Link to='/messagelist' /></Menu.Item>
           <Menu.Item key="2">视频审核<Link to='/videolist' /></Menu.Item>
           <Menu.Item key="3">标签管理<Link to='/tag' /></Menu.Item>
+          <Menu.Item key="4">产品反馈<Link to='/feedback' /></Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<LaptopOutlined />} title="发现页管理">
           <Menu.Item key="11">推荐<Link to='/found/recommend' /></Menu.Item>

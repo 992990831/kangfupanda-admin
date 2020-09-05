@@ -14,7 +14,7 @@ import GraphicMessageList from './GraphicMessage/GraphicMessageList';
 
 import { SiteVideoList, SiteGraphicMessageList, SiteDoctorList } from './OfficalSite';
 import { PendingAuditList, ApprovedList, RejectedList } from './Audit';
-import { FoundList, FollowList, JoinList } from './Found';
+import { FoundList, FollowList, JoinList, FeedbackList } from './Found';
 import { NewsList } from './WeChat';
 
 import { TagList } from './Tag';
@@ -84,6 +84,7 @@ function App() {
                   <Route exact path="/doctorlist" component={DoctorList} />
                   <Route exact path="/userlist" component={UserList} />
                   <Route exact path="/messagelist" component={GraphicMessageList} />
+                  <Route exact path="/feedback" component={FeedbackList} />
                   <Route exact path="/found/recommend" component={FoundList} />
                   <Route exact path="/found/follow" component={FollowList} />
                   <Route exact path="/found/join" component={JoinList} />
